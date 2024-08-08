@@ -1,0 +1,8 @@
+ALTER TABLE IF EXISTS public.users
+    ALTER COLUMN name DROP NOT NULL;
+
+ALTER TABLE IF EXISTS public.users
+    ALTER COLUMN surname DROP NOT NULL;
+
+ALTER TABLE IF EXISTS public.users
+    ADD COLUMN role integer;

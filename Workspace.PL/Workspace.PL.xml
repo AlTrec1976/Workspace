@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Workspace.PL</name>
+    </assembly>
+    <members>
+        <member name="M:Workspace.PL.WorkspaceUserController.LoginAsync(System.String,System.String)">
+            <summary>
+            Вход пользователя в систему
+            </summary>
+            <remarks>
+            Пример по документации контроллеров
+            </remarks>
+            <param name="login">Логин пользователя</param>
+            <param name="password">Пароль пользователя</param>
+            <returns>Возваращает cookie с токеном</returns>
+            <response code="200">Успешное выполнение</response>
+            <response code="400">Ошибка API</response>
+        </member>
+    </members>
+</doc>

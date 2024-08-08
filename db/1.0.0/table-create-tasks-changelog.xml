@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+  <changeSet id="1.0.0-createTasks-changelog" author="altrec">
+    <createTable tableName="tasks">
+      <column name="id" type="uuid"  defaultValueComputed="gen_random_uuid()">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="name" type="varchar(50)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="note" type="varchar">
+        <constraints nullable="true"/>
+      </column>
+      <column name="status" type="integer">
+        <constraints nullable="false"/>
+      </column>
+      <column name="managerid" type="uuid">
+        <constraints nullable="false"/>
+      </column>
+      <column name="employeeid" type="uuid">
+        <constraints nullable="true"/>
+      </column>
+    </createTable>
+  </changeSet>
+  
+</databaseChangeLog>

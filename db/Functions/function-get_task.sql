@@ -1,0 +1,13 @@
+CREATE OR REPLACE FUNCTION public.get_task(
+	taskid uuid)
+    RETURNS SETOF tasks
+    LANGUAGE 'plpgsql'
+    COST 100
+    VOLATILE PARALLEL UNSAFE
+    ROWS 1000
+
+AS $BODY$
+BEGIN
+RETURN QUERY SELECT * FROM tasks WHERE id=taskid;
+END;
+$BODY$;

@@ -1,0 +1,13 @@
+CREATE OR REPLACE FUNCTION public.get_note(
+	noteid uuid)
+    RETURNS SETOF notes
+    LANGUAGE 'plpgsql'
+    COST 100
+    VOLATILE PARALLEL UNSAFE
+    ROWS 1000
+
+AS $BODY$
+BEGIN
+RETURN QUERY SELECT * FROM notes WHERE id=noteid;
+END;
+$BODY$;

@@ -4,7 +4,7 @@
         <name>Workspace.PL</name>
     </assembly>
     <members>
-        <member name="M:Workspace.PL.WorkspaceUserController.LoginAsync(System.String,System.String)">
+        <member name="M:Workspace.PL.WorkspaceUserController.LoginAsync(Workspace.Entities.Users.WorkspaceUserLogin)">
             <summary>
             Вход пользователя в систему
             </summary>

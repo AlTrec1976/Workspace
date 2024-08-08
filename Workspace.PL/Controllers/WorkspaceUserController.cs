@@ -4,6 +4,7 @@ using System.Net;
 using Workspace.BLL.Logic;
 using Workspace.BLL.Logic.Contracts;
 using Workspace.Entities;
+using Workspace.Entities.Users;
 
 namespace Workspace.PL;
 
@@ -29,26 +30,27 @@ public class WorkspaceUserController(IUserService userService, ILogger<Workspace
     [ProducesResponseType(typeof(WorkspaceUserRequest), (int)HttpStatusCode.BadRequest)]
     [Authorize]
     [AllowAnonymous] // ,ЗАЧЕМ????
-    [HttpGet("{login}/{password}")]
-    public async Task<ActionResult> LoginAsync(string login, string password)
+    [HttpPost("api/login")]
+    //[HttpGet("{login}/{password}")]
+    public async Task<ActionResult> LoginAsync([FromBody] WorkspaceUserLogin userLogin)
     {
         try
         {
             var _workspaceUserRequest = new WorkspaceUserRequest();
-            _workspaceUserRequest.Login = login;
-            _workspaceUserRequest.Password = password;
+            _workspaceUserRequest.Login = userLogin.Login;
+            _workspaceUserRequest.Password = userLogin.Password;
             //создать токен
             var _token = await _userService.LoginAsync(_workspaceUserRequest);
-        
+
             Response.Cookies.Append("maxima-sec-cookies", _token, new CookieOptions
             {
-                Expires   = DateTimeOffset.UtcNow.AddDays(5),
+                Expires = DateTimeOffset.UtcNow.AddDays(5),
                 HttpOnly = true,
                 IsEssential = true,
-                Secure    = true,
+                Secure = true,
                 SameSite = SameSiteMode.None
             });
-       
+
             //return Ok(_token);
             return Ok();
         }
@@ -106,7 +108,7 @@ public class WorkspaceUserController(IUserService userService, ILogger<Workspace
         try
         {
             var validator = new UserValidator();
-        
+
             var validationResult = validator.Validate(workspaceUserRequest);
 
             if (!validationResult.IsValid)

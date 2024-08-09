@@ -4,6 +4,56 @@
         <name>Workspace.PL</name>
     </assembly>
     <members>
+        <member name="M:Workspace.PL.WorkspaceNoteController.GetAsync">
+            <summary>
+            Запрос всех заметок
+            </summary>
+        </member>
+        <member name="M:Workspace.PL.WorkspaceNoteController.GetAsync(System.Guid)">
+            <summary>
+            Запрос заметок по ID
+            </summary>
+        </member>
+        <member name="M:Workspace.PL.WorkspaceNoteController.UpdateAsync(System.Guid,Workspace.Entities.WorkspaceNoteRequest)">
+            <summary>
+            Изменение заметки
+            </summary>
+        </member>
+        <member name="M:Workspace.PL.WorkspaceNoteController.CreateAsync(Workspace.Entities.WorkspaceNoteRequest)">
+            <summary>
+            Создание заметки
+            </summary>
+        </member>
+        <member name="M:Workspace.PL.WorkspaceNoteController.DeleteAsync(System.Guid)">
+            <summary>
+            Удаление заметки
+            </summary>
+        </member>
+        <member name="M:Workspace.PL.WorkspaceTaskController.GetAsync">
+            <summary>
+            Запрос всех задач
+            </summary>
+        </member>
+        <member name="M:Workspace.PL.WorkspaceTaskController.GetAsync(System.Guid)">
+            <summary>
+            Запрос задач по ID
+            </summary>
+        </member>
+        <member name="M:Workspace.PL.WorkspaceTaskController.UpdateAsync(System.Guid,Workspace.Entities.WorkspaceTaskRequest)">
+            <summary>
+            Изменение задачи
+            </summary>
+        </member>
+        <member name="M:Workspace.PL.WorkspaceTaskController.CreateAsync(Workspace.Entities.WorkspaceTaskRequest)">
+            <summary>
+            Создание задачи
+            </summary>
+        </member>
+        <member name="M:Workspace.PL.WorkspaceTaskController.DeleteAsync(System.Guid)">
+            <summary>
+            Удаление задачи
+            </summary>
+        </member>
         <member name="M:Workspace.PL.WorkspaceUserController.LoginAsync(Workspace.Entities.Users.WorkspaceUserLogin)">
             <summary>
             Вход пользователя в систему
@@ -16,6 +66,31 @@
             <returns>Возваращает cookie с токеном</returns>
             <response code="200">Успешное выполнение</response>
             <response code="400">Ошибка API</response>
+        </member>
+        <member name="M:Workspace.PL.WorkspaceUserController.GetAsync">
+            <summary>
+            Запросить всех пользователей
+            </summary>
+        </member>
+        <member name="M:Workspace.PL.WorkspaceUserController.GetAsync(System.Guid)">
+            <summary>
+            Запрос пользователя по ID
+            </summary>
+        </member>
+        <member name="M:Workspace.PL.WorkspaceUserController.UpdateAsync(System.Guid,Workspace.Entities.WorkspaceUserRequest)">
+            <summary>
+            Изменение данных пользователя
+            </summary>
+        </member>
+        <member name="M:Workspace.PL.WorkspaceUserController.CreateAsync(Workspace.Entities.WorkspaceUserRequest)">
+            <summary>
+            Создание нового пользователя
+            </summary>
+        </member>
+        <member name="M:Workspace.PL.WorkspaceUserController.DeleteAsync(System.Guid)">
+            <summary>
+            Удаление пользователя
+            </summary>
         </member>
     </members>
 </doc>

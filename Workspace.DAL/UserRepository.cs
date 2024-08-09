@@ -111,23 +111,16 @@ public class UserRepository : BaseRepository, IUserRepository
 
     public async Task<WorkspaceUserDTO?> GetByUserLoginAsync(string userLogin)
     {
-        //WorkspaceUserDTO? result = null;
         try
         {
             var sql = "SELECT * FROM public.check_user_login(@login)";
             var param = new { login = userLogin };
             return await QuerySingleAsync<WorkspaceUserDTO>(sql, param);
-        //    return result is null ? null : result;
         }
         catch (Exception ex)
         {
-            //if (result is null) 
-            //{ 
-            //    return new WorkspaceUserDTO();
-            //}
-
             _logger.LogError(ex, "Ошибка при проверки логина пользователя");
-            throw;
+            return new WorkspaceUserDTO();
         }
     }
 

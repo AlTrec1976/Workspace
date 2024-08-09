@@ -29,10 +29,9 @@ public class WorkspaceUserController(IUserService userService, ILogger<Workspace
     [ProducesResponseType(typeof(string), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(WorkspaceUserRequest), (int)HttpStatusCode.BadRequest)]
     [Authorize]
-    [AllowAnonymous] // ,ЗАЧЕМ????
-    [HttpPost("api/login")]
-    //[HttpGet("{login}/{password}")]
-    public async Task<ActionResult> LoginAsync([FromBody] WorkspaceUserLogin userLogin)
+    //[AllowAnonymous] // ,ЗАЧЕМ????
+    [HttpPost("login")]
+    public async Task<IActionResult> LoginAsync([FromBody] WorkspaceUserLogin userLogin)
     {
         try
         {
@@ -51,8 +50,7 @@ public class WorkspaceUserController(IUserService userService, ILogger<Workspace
                 SameSite = SameSiteMode.None
             });
 
-            //return Ok(_token);
-            return Ok();
+            return Ok(_token);
         }
         catch (Exception ex)
         {
@@ -62,6 +60,9 @@ public class WorkspaceUserController(IUserService userService, ILogger<Workspace
     }
 
     // GET: api/<WorkspaceUserController>
+    /// <summary>
+    /// Запросить всех пользователей
+    /// </summary>
     [Authorize]
     [HasPermission([Permission.create, Permission.update])]
     [HttpGet]
@@ -80,6 +81,9 @@ public class WorkspaceUserController(IUserService userService, ILogger<Workspace
     }
 
     // GET api/<WorkspaceUserController>/5
+    /// <summary>
+    /// Запрос пользователя по ID
+    /// </summary>
     [Authorize]
     [HttpGet("{id}")]
     public async Task<ActionResult<WorkspaceUserResponse>> GetAsync(Guid id)
@@ -101,6 +105,9 @@ public class WorkspaceUserController(IUserService userService, ILogger<Workspace
     }
 
     // PUT api/<WorkspaceUserController>/5
+    /// <summary>
+    /// Изменение данных пользователя
+    /// </summary>
     [Authorize]
     [HttpPut("{id}")]
     public async Task UpdateAsync(Guid id, [FromBody] WorkspaceUserRequest workspaceUserRequest)
@@ -132,7 +139,10 @@ public class WorkspaceUserController(IUserService userService, ILogger<Workspace
         }
     }
     // POST api/<WorkspaceUserController>
-    [Authorize]
+    /// <summary>
+    /// Создание нового пользователя
+    /// </summary>
+    [AllowAnonymous]
     [HttpPost]
     public async Task CreateAsync([FromBody] WorkspaceUserRequest workspaceUserRequest)
     {
@@ -163,6 +173,9 @@ public class WorkspaceUserController(IUserService userService, ILogger<Workspace
     }
 
     // DELETE api/<WorkspaceUserController>/5
+    /// <summary>
+    /// Удаление пользователя
+    /// </summary>
     [Authorize]
     [HttpDelete("{id}")]
     public async Task DeleteAsync(Guid id)

@@ -15,6 +15,9 @@ public class WorkspaceNoteController(INoteService noteService, ILogger<Workspace
     private readonly INoteService _noteService = noteService;
     private readonly ILogger _logger = logger;
 
+    /// <summary>
+    /// Запрос всех заметок
+    /// </summary>
     [Authorize]
     [HttpGet]
     public async Task<ActionResult<IEnumerable<WorkspaceNoteResponse>>> GetAsync()
@@ -31,6 +34,9 @@ public class WorkspaceNoteController(INoteService noteService, ILogger<Workspace
         }
     }
 
+    /// <summary>
+    /// Запрос заметок по ID
+    /// </summary>
     [Authorize]
     [HttpGet("{id}")]
     public async Task<ActionResult<WorkspaceNoteResponse>> GetAsync(Guid id)
@@ -51,6 +57,9 @@ public class WorkspaceNoteController(INoteService noteService, ILogger<Workspace
         }
     }
 
+    /// <summary>
+    /// Изменение заметки
+    /// </summary>
     [Authorize]
     [HttpPut("{id}")]
     public async Task UpdateAsync(Guid id, [FromBody] WorkspaceNoteRequest WorkspaceNoteRequest)
@@ -82,6 +91,9 @@ public class WorkspaceNoteController(INoteService noteService, ILogger<Workspace
     }
 
 
+    /// <summary>
+    /// Создание заметки
+    /// </summary>
     [Authorize]
     [HttpPost]
     public async Task CreateAsync([FromBody] WorkspaceNoteRequest WorkspaceNoteRequest)
@@ -112,6 +124,9 @@ public class WorkspaceNoteController(INoteService noteService, ILogger<Workspace
         }
     }
 
+    /// <summary>
+    /// Удаление заметки
+    /// </summary>
     [Authorize]
     [HttpDelete("{id}")]
     public async Task DeleteAsync(Guid id)

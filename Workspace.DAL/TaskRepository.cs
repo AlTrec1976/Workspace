@@ -9,7 +9,6 @@ public class TaskRepository : BaseRepository, ITaskRepository
 {
     private readonly ILogger _logger;
 
-    //TODO: ѕеределать на потокобезопасный фабричный метод
     public TaskRepository(ILogger<TaskRepository> logger, IConfiguration configuration)
         : base(logger, configuration)
     {

@@ -62,7 +62,7 @@ public class UserService(AppDbContext context, IMapper mapper, IUserRepository u
         }
     }
 
-    //Регистрация пользователя
+    //Аутентификация пользователя
    public async Task<string> LoginAsync(WorkspaceUserRequest workspaceUserRequest)
     {
         try

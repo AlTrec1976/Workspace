@@ -25,7 +25,7 @@ public class JwtProvider (IOptions<JwtOptions> options) : IJwtProvider
         var token = new JwtSecurityToken(
             claims:claims,
             signingCredentials : signingCredentials,
-            expires : DateTime.UtcNow.AddHours(_options.ExpitesHours));
+            expires : DateTime.UtcNow.AddHours(_options.ExpiresHours));
         
         //получаем строку из JwtSecurityToken
         var tokenValue = new JwtSecurityTokenHandler().WriteToken(token);

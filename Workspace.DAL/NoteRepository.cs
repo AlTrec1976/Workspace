@@ -8,7 +8,6 @@ public class NoteRepository : BaseRepository, INoteRepository
 {
     private readonly ILogger _logger;
 
-    //TODO: Переделать на потокобезопасный фабричный метод
     public NoteRepository(ILogger<TaskRepository> logger, IConfiguration configuration)
         : base(logger, configuration)
     {

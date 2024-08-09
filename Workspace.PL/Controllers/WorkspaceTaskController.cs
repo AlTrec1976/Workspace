@@ -15,6 +15,9 @@ public class WorkspaceTaskController(ITaskService taskService, ILogger<Workspace
     private readonly ITaskService _taskService = taskService;
     private readonly ILogger _logger = logger;
 
+    /// <summary>
+    /// Запрос всех задач
+    /// </summary>
     [Authorize]
     [HttpGet]
     public async Task<ActionResult<IEnumerable<WorkspaceTaskResponse>>> GetAsync()
@@ -31,6 +34,9 @@ public class WorkspaceTaskController(ITaskService taskService, ILogger<Workspace
         }
     }
 
+    /// <summary>
+    /// Запрос задач по ID
+    /// </summary>
     [Authorize]
     [HttpGet("{id}")]
     public async Task<ActionResult<WorkspaceTaskResponse>> GetAsync(Guid id)
@@ -51,6 +57,9 @@ public class WorkspaceTaskController(ITaskService taskService, ILogger<Workspace
         }
     }
 
+    /// <summary>
+    /// Изменение задачи
+    /// </summary>
     [Authorize]
     [HttpPut("{id}")]
     public async Task UpdateAsync(Guid id, [FromBody] WorkspaceTaskRequest workspaceTaskRequest)
@@ -82,6 +91,9 @@ public class WorkspaceTaskController(ITaskService taskService, ILogger<Workspace
     }
 
 
+    /// <summary>
+    /// Создание задачи
+    /// </summary>
     [Authorize]
     [HttpPost]
     public async Task CreateAsync([FromBody] WorkspaceTaskRequest workspaceTaskRequest)
@@ -112,6 +124,9 @@ public class WorkspaceTaskController(ITaskService taskService, ILogger<Workspace
         }
     }
 
+    /// <summary>
+    /// Удаление задачи
+    /// </summary>
     [Authorize]
     [HttpDelete("{id}")]
     public async Task DeleteAsync(Guid id)

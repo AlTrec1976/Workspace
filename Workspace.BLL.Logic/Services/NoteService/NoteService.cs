@@ -14,7 +14,6 @@ public class NoteService(AppDbContext context, IMapper mapper, INoteRepository n
     private readonly IMapper _mapper = mapper;
     private readonly ILogger _logger = logger;
 
-    //TODO: Переделать маппинг только по MappingProfiles
     public async Task<List<WorkspaceNoteResponse>> GetAllAsync()
     {
         try

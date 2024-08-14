@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+    http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd ">
+
+    <include file="/Procedures/update_user.sql"/>
+    <include file="/Procedures/update_task.sql"/>
+    <include file="/Procedures/update_note.sql"/>
+    <include file="/Procedures/create_user.sql"/>
+    <include file="/Procedures/create_task.sql"/>
+    <include file="/Procedures/create_note.sql"/>
+    <include file="/Procedures/delete_user.sql"/>
+    <include file="/Procedures/delete_task.sql"/>
+    <include file="/Procedures/delete_note.sql"/>
+    <include file="/Procedures/create_invite.sql"/>
+    <include file="/Procedures/create_invite_detail.sql"/>
+    <include file="/Procedures/create_sendbox.sql"/>
+    <include file="/Procedures/create_task_mart.sql"/>
+    <include file="/Procedures/create_workspacemart.sql"/>
+    <include file="/Procedures/update_task_employee.sql"/>
+    
+</databaseChangeLog>

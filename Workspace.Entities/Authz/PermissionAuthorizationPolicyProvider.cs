@@ -14,30 +14,12 @@ public class PermissionAuthorizationPolicyProvider : DefaultAuthorizationPolicyP
         _logger = logger;
     }
 
-    public override async Task<AuthorizationPolicy?> GetPolicyAsync(string policyName)
-    {
-        PermissionRequirement prm;
-
+   public override async Task<AuthorizationPolicy?> GetPolicyAsync(string policyName)
+   {
+        
         try
         {
             AuthorizationPolicy? policy = await base.GetPolicyAsync(policyName);
-
-
-            if (policy is not null)
-            {
-                return policy;
-            }
-
-            string[] groups = policyName.Split(new[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries);
-
-            Permission[] enams = new Permission[groups.Length];
-
-            for (int i = 0; i < groups.Length; i++)
-            {
-                enams[i] = (Permission)Enum.Parse(typeof(Permission), groups[i].ToString());
-            }
-
-            prm = new PermissionRequirement(enams);
         }
         catch (Exception ex)
         {
@@ -46,7 +28,23 @@ public class PermissionAuthorizationPolicyProvider : DefaultAuthorizationPolicyP
         }
 
         return new AuthorizationPolicyBuilder()
-            .AddRequirements(prm)
-            .Build();
+                    .AddRequirements(GetPermissionRequirement(policyName))
+                    .Build();
+   }
+
+    private PermissionRequirement GetPermissionRequirement(string policyName)
+    {
+        string[] groups = policyName.Split(new[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+        Permission[] enams = new Permission[groups.Length];
+
+        for (int i = 0; i < groups.Length; i++)
+        {
+            enams[i] = (Permission)Enum.Parse(typeof(Permission), groups[i].ToString());
+        }
+
+        return new PermissionRequirement(enams);
     }
 }
+
+

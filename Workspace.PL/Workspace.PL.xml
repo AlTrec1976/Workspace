@@ -4,6 +4,110 @@
         <name>Workspace.PL</name>
     </assembly>
     <members>
+        <member name="M:Workspace.PL.Controllers.WorkspaceInviteController.CreateAsync(Workspace.Entities.InviteRequest)">
+            <summary>
+            Создание приглашения
+            </summary>
+            <remarks>
+            Пользователь, он же менеджер, который создал WorkspaceMart, выкладывает приглашение,
+            чтобы другие пользователи системы могли поучаствовать в тасках по этому марту
+            </remarks>
+            <param name="inviteRequest"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Workspace.PL.Controllers.WorkspaceInviteController.GetAllInvitesAsync">
+            <summary>
+            Список приглашений для участия в тасках
+            </summary>
+            <remarks>
+             Выводит список приглашений для пользователей, чтобы была возможность
+             пользователю добавить себя в песочницу из который менеджер будет
+             выбирать конкретных пользователей для добавления в таск
+            </remarks>
+            <returns></returns>
+        </member>
+        <member name="M:Workspace.PL.Controllers.WorkspaceInviteController.AcceptInvite(Workspace.Entities.InviteDetailRequest)">
+            <summary>
+            Принятие приглашения одним из пользователей
+            </summary>
+            <remarks>
+            Если пользователь принимает приглашение, после этого менеджер может 
+            его добавить в песочницу. Так как пользователь закрепляется в таске
+            только из песочницы
+            </remarks>
+            <param name="inviteDetailRequest">
+                "inviteID": приглашение на которое согласен пользователь,
+                "userID": идентификатор пользователя ,
+                "comments": комментарий, который может оставить пользователь
+            </param>
+            <returns></returns>
+            <response code="200">Ответ на приглашение сохранено, менеджер 
+            сможет добавить в песочницу данного пользователя</response>
+        </member>
+        <member name="M:Workspace.PL.Controllers.WorkspaceInviteController.GetAcceptedInvitesAsync(System.Guid)">
+            <summary>
+            Список пользователей которые приняли приглашение. 
+            </summary>
+            <remarks>
+            Из данного списка менеджер будет добавлять пользователей в песочницу,
+            из которой можно уже выбрать пользователей и закрепить за конкретным
+            такско
+            </remarks>
+            <param name="martId">ИД марта, для которых хотим увидеть согласившихся юзеров</param>
+            <returns> </returns>
+        </member>
+        <member name="T:Workspace.PL.Controllers.WorkspaceMartController">
+            <summary>
+            Контроллер работы с WorkspaceMart
+            </summary>
+            <param name="workspaceMartService"></param>
+        </member>
+        <member name="M:Workspace.PL.Controllers.WorkspaceMartController.#ctor(Workspace.BLL.Logic.IWorkspaceMartService)">
+            <summary>
+            Контроллер работы с WorkspaceMart
+            </summary>
+            <param name="workspaceMartService"></param>
+        </member>
+        <member name="M:Workspace.PL.Controllers.WorkspaceMartController.CreateAsyncAsync(Workspace.Entities.WorkspaceMartRequest)">
+             <summary>
+             Создание WorkspaceMart
+             </summary>
+             <remarks>
+             Пользователь создает WorkspaceMart в котором будут Таски и пользователи 
+             закрепленные за тасками
+             </remarks>
+             <param name="workspaceMartRequest">
+             "name": название WorkspaceMart,
+            "ownerId": ИД пользователя, который создает 
+             </param>
+             <response code="200">Вернет JSON workspaceMartRequestе который содержит ИД созданного  WorkspaceMart</response>
+        </member>
+        <member name="M:Workspace.PL.Controllers.WorkspaceMartController.AddNewTaskAsync(System.Guid,Workspace.Entities.WorkspaceTaskShortRequest)">
+            <summary>
+            Добавление Таска связанного с WorkspaceMart
+            </summary>
+            <remarks>
+            На данном этапе не может быть добавлен пользователь, так как пользователь может
+            быть выбран из песочницы
+            </remarks>
+            <param name="id">ИД WorkspaceMart к которому привязываем задания</param>
+            <param name="workspaceTaskRequest">
+              "name": название нового Таска, 
+              "status": согласно логике при создании Таска его статус равен Новый = 1
+            </param>
+            <returns></returns>
+        </member>
+        <member name="M:Workspace.PL.Controllers.WorkspaceSendbox.CreateAsync(Workspace.Entities.SendboxRequest)">
+            <summary>
+            Добавляем пользователя в песочницу
+            </summary>
+            <remarks>
+            Добавляем пользователя в песочницу по конкретный март,
+            чтобы из песочницы уже добавить к таску
+            </remarks>
+            <param name="sendboxRequest"></param>
+            <returns></returns>
+        </member>
         <member name="M:Workspace.PL.WorkspaceNoteController.GetAsync">
             <summary>
             Запрос всех заметок
@@ -84,7 +188,7 @@
         </member>
         <member name="M:Workspace.PL.WorkspaceUserController.CreateAsync(Workspace.Entities.WorkspaceUserRequest)">
             <summary>
-            Создание нового пользователя
+            Создание пользователя
             </summary>
         </member>
         <member name="M:Workspace.PL.WorkspaceUserController.DeleteAsync(System.Guid)">

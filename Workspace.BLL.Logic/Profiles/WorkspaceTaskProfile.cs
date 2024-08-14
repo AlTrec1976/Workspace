@@ -13,10 +13,10 @@ public class WorkspaceTaskProfile : Profile
         CreateMap<WorkspaceTaskDTO, WorkspaceTask>()
             .ForMember(dest => dest.Id, src => src.MapFrom(x => x.Id))
             .ForMember(dest => dest.Name, src => src.MapFrom(x => x.Name))
-            .ForMember(dest => dest.Status, src => src.MapFrom((x) => StatusTask.FromValue(x.Status)))
-            .ForMember(dest => dest.Notes, src => src.MapFrom(x => x.Notes))
-            .ForMember(dest => dest.ManagerId, src => src.MapFrom(x => x.ManagerId))
-            .ForMember(dest => dest.EmployeeId, src => src.MapFrom(x => x.EmployeeId));
+            .ForMember(dest => dest.Status, src => src.MapFrom((x) => StatusTask.FromValue(x.Status)));
+            //.ForMember(dest => dest.Notes, src => src.MapFrom(x => x.Notes));
+        //.ForMember(dest => dest.ManagerId, src => src.MapFrom(x => x.ManagerId))
+        //.ForMember(dest => dest.EmployeeId, src => src.MapFrom(x => x.EmployeeId));
 
         //маппинг из объекта в сервис
         CreateMap<WorkspaceTask, WorkspaceTaskResponse>()
@@ -27,13 +27,13 @@ public class WorkspaceTaskProfile : Profile
             .ForMember(dest => dest.Status,
                 src => src.MapFrom(x => x.Status.IdStatus))
             .ForMember(dest => dest.StatusName,
-                src => src.MapFrom(x => x.Status.NameForStatus))
-            .ForMember(dest => dest.Notes, 
-                src => src.MapFrom(x => x.Notes))
-            .ForMember(dest => dest.ManagerId, 
-                src => src.MapFrom(x => x.ManagerId))
-            .ForMember(dest => dest.EmployeeId, 
-                src => src.MapFrom(x => x.EmployeeId));
+                src => src.MapFrom(x => x.Status.NameForStatus));
+            //.ForMember(dest => dest.Notes,
+             //   src => src.MapFrom(x => x.Notes));
+            //.ForMember(dest => dest.ManagerId, 
+            //    src => src.MapFrom(x => x.ManagerId))
+            //.ForMember(dest => dest.EmployeeId, 
+            //    src => src.MapFrom(x => x.EmployeeId));
 
         //маппинг из DTO в сервиса
         CreateMap<WorkspaceTaskDTO, WorkspaceTaskResponse>()
@@ -41,25 +41,25 @@ public class WorkspaceTaskProfile : Profile
                 src => src.MapFrom(x => x.Name))
             .ForMember(dest => dest.Id,
                 src => src.MapFrom(x => 1))
-            .ForMember(dest => dest.Notes, 
-                src => src.MapFrom(x => x.Notes))
+            //.ForMember(dest => dest.Notes, 
+            //    src => src.MapFrom(x => x.Notes))
             .ForMember(dest => dest.ManagerId, 
                 src => src.MapFrom(x => x.ManagerId))
             .ForMember(dest => dest.EmployeeId, 
                 src => src.MapFrom(x => x.EmployeeId));
-            
+
         //из Request в объект
         CreateMap<WorkspaceTaskRequest, WorkspaceTask>()
            .ForMember(dest => dest.Name,
                 src => src.MapFrom(x => x.Name))
             .ForMember(dest => dest.Status,
-                src => src.MapFrom((x) => StatusTask.FromValue(x.Status)))
-            .ForMember(dest => dest.Notes, 
-                src => src.MapFrom(x => x.Notes))
-            .ForMember(dest => dest.ManagerId, 
-                src => src.MapFrom(x => x.ManagerId))
-            .ForMember(dest => dest.EmployeeId, 
-                src => src.MapFrom(x => x.EmployeeId));
+                src => src.MapFrom((x) => StatusTask.FromValue(x.Status)));
+        //.ForMember(dest => dest.Notes,
+        //   src => src.MapFrom(x => x.Notes));
+        //.ForMember(dest => dest.ManagerId, 
+        //    src => src.MapFrom(x => x.ManagerId))
+        //.ForMember(dest => dest.EmployeeId, 
+        //    src => src.MapFrom(x => x.EmployeeId));
 
         //из объекта в DTO
         CreateMap<WorkspaceTask, WorkspaceTaskDTO>()
@@ -68,12 +68,12 @@ public class WorkspaceTaskProfile : Profile
             .ForMember(dest => dest.Name,
                 src => src.MapFrom(x => x.Name))
             .ForMember(dest => dest.Status,
-                src => src.MapFrom(x => x.Status.IdStatus))
-            .ForMember(dest => dest.Notes, 
-                src => src.MapFrom(x => x.Notes))
-            .ForMember(dest => dest.ManagerId, 
-                src => src.MapFrom(x => x.ManagerId))
-            .ForMember(dest => dest.EmployeeId, 
-                src => src.MapFrom(x => x.EmployeeId));
+                src => src.MapFrom(x => x.Status.IdStatus));
+            //.ForMember(dest => dest.Notes,
+             //   src => src.MapFrom(x => x.Notes));
+            //.ForMember(dest => dest.ManagerId, 
+            //    src => src.MapFrom(x => x.ManagerId))
+            //.ForMember(dest => dest.EmployeeId, 
+            //    src => src.MapFrom(x => x.EmployeeId));
     }
 }

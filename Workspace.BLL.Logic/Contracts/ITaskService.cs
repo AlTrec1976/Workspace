@@ -10,5 +10,4 @@ public interface ITaskService
     Task UpdateAsync(Guid id, WorkspaceTaskRequest workspaceTaskRequest);
     Task CreateAsync(WorkspaceTaskRequest workspaceTaskRequest);
     Task DeleteAsync(Guid id);
-    void ChangeStatus();
 }

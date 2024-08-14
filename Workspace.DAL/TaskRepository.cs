@@ -57,7 +57,7 @@ public class TaskRepository : BaseRepository, ITaskRepository
                 id = workspaceTaskDTO.Id,
                 name = workspaceTaskDTO.Name,
                 status = workspaceTaskDTO.Status,
-                note = workspaceTaskDTO.Notes,
+                //note = workspaceTaskDTO.Notes,
                 managerid = workspaceTaskDTO.ManagerId,
                 employeeid = workspaceTaskDTO.EmployeeId
             };
@@ -81,7 +81,7 @@ public class TaskRepository : BaseRepository, ITaskRepository
             {
                 name = workspaceTaskDTO.Name,
                 status = workspaceTaskDTO.Status,
-                note = workspaceTaskDTO.Notes,
+                //note = workspaceTaskDTO.Notes,
                 managerid = workspaceTaskDTO.ManagerId,
                 employeeid = workspaceTaskDTO.EmployeeId
             };
@@ -94,6 +94,8 @@ public class TaskRepository : BaseRepository, ITaskRepository
             throw;
         }
     }
+
+   
 
     public async Task DeleteAsync(Guid taskId)
     {

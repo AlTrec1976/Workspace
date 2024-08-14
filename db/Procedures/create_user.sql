@@ -1,4 +1,3 @@
-DROP PROCEDURE IF EXISTS public.create_user(character, character, character, character);
 CREATE OR REPLACE PROCEDURE public.create_user(
 	userlogin character,
 	userpassword character,

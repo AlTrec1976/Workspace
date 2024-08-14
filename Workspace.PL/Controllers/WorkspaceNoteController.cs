@@ -19,6 +19,7 @@ public class WorkspaceNoteController(INoteService noteService, ILogger<Workspace
     /// Запрос всех заметок
     /// </summary>
     [Authorize]
+    [HasPermission([Permission.user, Permission.read])]
     [HttpGet]
     public async Task<ActionResult<IEnumerable<WorkspaceNoteResponse>>> GetAsync()
     {
@@ -38,6 +39,7 @@ public class WorkspaceNoteController(INoteService noteService, ILogger<Workspace
     /// Запрос заметок по ID
     /// </summary>
     [Authorize]
+    [HasPermission([Permission.user, Permission.read])]
     [HttpGet("{id}")]
     public async Task<ActionResult<WorkspaceNoteResponse>> GetAsync(Guid id)
     {
@@ -61,6 +63,7 @@ public class WorkspaceNoteController(INoteService noteService, ILogger<Workspace
     /// Изменение заметки
     /// </summary>
     [Authorize]
+    [HasPermission([Permission.user, Permission.update])]
     [HttpPut("{id}")]
     public async Task UpdateAsync(Guid id, [FromBody] WorkspaceNoteRequest WorkspaceNoteRequest)
     {
@@ -95,6 +98,7 @@ public class WorkspaceNoteController(INoteService noteService, ILogger<Workspace
     /// Создание заметки
     /// </summary>
     [Authorize]
+    [HasPermission([Permission.user, Permission.create])]
     [HttpPost]
     public async Task CreateAsync([FromBody] WorkspaceNoteRequest WorkspaceNoteRequest)
     {
@@ -128,6 +132,7 @@ public class WorkspaceNoteController(INoteService noteService, ILogger<Workspace
     /// Удаление заметки
     /// </summary>
     [Authorize]
+    [HasPermission([Permission.user, Permission.delete])]
     [HttpDelete("{id}")]
     public async Task DeleteAsync(Guid id)
     {

@@ -20,7 +20,10 @@ builder.Services.ConfigureDependencies();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-builder.Services.AddControllers();
+builder.Services.AddControllers(options =>
+{
+    options.ModelBinderProviders.Insert(0, new GuidModelBinderProvider());
+});
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -47,6 +50,7 @@ var mappingConfig = new MapperConfiguration(mc =>
     mc.AddProfile(new WorkspaceTaskProfile());
     mc.AddProfile(new WorkspaceUserProfile());
     mc.AddProfile(new WorkspaceNoteProfile());
+    mc.AddProfile(new InviteProfile());
 });
 
 IMapper mapper = mappingConfig.CreateMapper();

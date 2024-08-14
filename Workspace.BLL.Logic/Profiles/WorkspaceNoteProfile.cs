@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Workspace.DAL;
 using Workspace.Entities;
 
 namespace Workspace.BLL.Logic;

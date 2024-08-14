@@ -1,7 +1,6 @@
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Workspace.Auth;
 using Workspace.BLL.Logic;
@@ -23,7 +22,14 @@ public static class DIExtensions
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<INoteService, NoteService>();
         services.AddScoped<INoteRepository, NoteRepository>();
-        
+        //
+        services.AddScoped<IWorkspaceMartService, WorkspaceMartService>();
+        services.AddScoped<IMartRepository,MartRepository>();
+        services.AddScoped<IInviteRepository, InviteRepository>();
+        services.AddScoped<IInviteService, InviteService>();
+        services.AddScoped<ISendboxRepository,SendboxRepository>();
+        services.AddScoped<ISendboxService, SendboxService>();
+
         return services;
     }
 

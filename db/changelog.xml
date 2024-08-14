@@ -8,8 +8,8 @@
     http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd ">
 
   <include file="/1.0.0/accumulate-changelog.xml"/>
-  <include file="/Functions/accumulate-changelog.xml"/>
-  <include file="/StoredProcedures/accumulate-changelog.xml"/>
   <include file="/1.0.0_security/accumulate-changelog.xml"/>
-
+  <include file="/Functions/accumulate-changelog.xml"/>
+  <include file="/Procedures/accumulate-changelog.xml"/>
+  
 </databaseChangeLog>

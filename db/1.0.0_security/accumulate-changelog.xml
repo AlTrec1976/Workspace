@@ -11,6 +11,11 @@
     <include file="/1.0.0_security/table-create_roles.sql"/>
     <include file="/1.0.0_security/table-create_permissions.sql"/>
     <include file="/1.0.0_security/table-create_roles_permissions.sql"/>
-    <include file="/1.0.0_security/function-get_permission.sql"/>
-    
+    <include file="/1.0.0_security/table-create_workspacemart.sql"/>
+    <include file="/1.0.0_security/table-create_workspacemart_tasks.sql"/>
+    <include file="/1.0.0_security/table-create_workspacemart_users.sql"/>
+    <include file="/1.0.0_security/table-create_invites.sql"/>
+    <include file="/1.0.0_security/table-create_invite_details.sql"/>
+    <include file="/1.0.0_security/table-create_sendbox.sql"/>
+
 </databaseChangeLog>

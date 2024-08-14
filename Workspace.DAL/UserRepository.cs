@@ -127,8 +127,7 @@ public class UserRepository : BaseRepository, IUserRepository
     public async Task<HashSet<Permission>> GetUserPermission(Guid userID)
     {
         var sql = @"SELECT * FROM public.get_permission(@id)";
-        var permission = new Permission();
-        
+              
         var param = new { id = userID };
 
         var hst = new HashSet<Permission>(await QueryAsync<Permission>(sql, param));

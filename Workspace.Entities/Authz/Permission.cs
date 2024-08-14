@@ -5,5 +5,9 @@ public enum Permission
     read = 1,
     create,
     update,
-    delete
+    delete,
+    admin,
+    user,
+    manager,
+    empl
 }

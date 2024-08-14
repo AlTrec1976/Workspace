@@ -7,12 +7,18 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
     http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd ">
 
-    <include file="/Functions/function-get_user.sql"/>
-    <include file="/Functions/function-get_task.sql"/>
-    <include file="/Functions/function-get_note.sql"/>
-    <include file="/Functions/function-get_all_users.sql"/>
-    <include file="/Functions/function-get_all_tasks.sql"/>
-    <include file="/Functions/function-get_all_notes.sql"/>
-    <include file="/Functions/function-check_user_login.sql"/>
+    <include file="/Functions/get_user.sql"/>
+    <include file="/Functions/get_task.sql"/>
+    <include file="/Functions/get_note.sql"/>
+    <include file="/Functions/get_all_users.sql"/>
+    <include file="/Functions/get_all_tasks.sql"/>
+    <include file="/Functions/get_all_notes.sql"/>
+    <include file="/Functions/check_user_login.sql"/>
+    <include file="/Functions/get_permission.sql"/>
+    <include file="/Functions/get_all_invites.sql"/>
+    <include file="/Functions/get_invite_users.sql"/>
+    <include file="/Functions/get_mart_tasks.sql"/>
+    <include file="/Functions/get_sendbox_users.sql"/>
+    <include file="/Functions/update_task_employee.sql"/>
 
 </databaseChangeLog>

@@ -1,0 +1,60 @@
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations;
+using Workspace.BLL.Logic;
+using Workspace.Entities;
+
+
+namespace Workspace.PL.Controllers
+{
+    /// <summary>
+    /// Контроллер работы с WorkspaceMart
+    /// </summary>
+    /// <param name="workspaceMartService"></param>
+    [Route("api/[controller]")]
+    [ApiController]
+    public class WorkspaceMartController(IWorkspaceMartService workspaceMartService) : ControllerBase
+    {
+        private readonly IWorkspaceMartService _workspaceMartService = workspaceMartService;
+
+        /// <summary>
+        /// Создание WorkspaceMart
+        /// </summary>
+        /// <remarks>
+        /// Пользователь создает WorkspaceMart в котором будут Таски и пользователи 
+        /// закрепленные за тасками
+        /// </remarks>
+        /// <param name="workspaceMartRequest">
+        /// "name": название WorkspaceMart,
+        ///"ownerId": ИД пользователя, который создает 
+        /// </param>
+        /// <response code="200">Вернет JSON workspaceMartRequestе который содержит ИД созданного  WorkspaceMart</response>
+        [HttpPost]
+        public async Task <WorkspaceMartResponse> CreateAsyncAsync([FromBody] WorkspaceMartRequest workspaceMartRequest)
+        {
+            return await _workspaceMartService.CreateWorkpaceMartAsync(workspaceMartRequest);
+        }
+
+        /// <summary>
+        /// Добавление Таска связанного с WorkspaceMart
+        /// </summary>
+        /// <remarks>
+        /// На данном этапе не может быть добавлен пользователь, так как пользователь может
+        /// быть выбран из песочницы
+        /// </remarks>
+        /// <param name="id">ИД WorkspaceMart к которому привязываем задания</param>
+        /// <param name="workspaceTaskRequest">
+        ///   "name": название нового Таска, 
+        ///   "status": согласно логике при создании Таска его статус равен Новый = 1
+        /// </param>
+        /// <returns></returns>
+        [HttpPost("{id}")]
+        public async Task<WorkspaceTaskResponse> AddNewTaskAsync(Guid id, [FromBody] WorkspaceTaskShortRequest workspaceTaskRequest)
+        {
+            
+            return await _workspaceMartService.CreateTaskAsync(id, workspaceTaskRequest);
+        }
+    }
+}

@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using System.Linq;
 using Workspace.Entities.Contracts;
 
 namespace Workspace.Entities;
@@ -32,9 +33,10 @@ public class PermissionAuthorizationHandler : AuthorizationHandler<PermissionReq
 
             var permissions = await permissionService.GetPermissionsAsync(id);
 
-            if (permissions.Intersect(requirement.Permissions).Any())
-            {
+            HashSet<Permission> requirementsSet = new HashSet<Permission>(requirement.Permissions);
 
+            if (requirementsSet.IsSubsetOf(permissions))
+            {
                 context.Succeed(requirement);
             }
         }

@@ -29,7 +29,6 @@ public abstract class BaseRepository
             throw;
         }
     }
-
     public async Task<IEnumerable<T>> QueryAsync<T>(string sql, object param = null)
     {
         try
@@ -44,7 +43,6 @@ public abstract class BaseRepository
             throw;
         }
     }
-
     public async Task<T> QuerySingleAsync<T>(string sql, object param = null)
     {
         try
@@ -58,7 +56,6 @@ public abstract class BaseRepository
             throw;
         }
     }
-
     protected NpgsqlConnection GetConnection()
     {
         try

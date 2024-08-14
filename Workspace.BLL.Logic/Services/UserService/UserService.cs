@@ -9,7 +9,7 @@ using Workspace.Entities.Contracts;
 
 namespace Workspace.BLL.Logic;
 
-public class UserService(AppDbContext context, IMapper mapper, IUserRepository userRepository, 
+public class UserService(AppDbContext context, IMapper mapper, IUserRepository userRepository,
     IWorkspacePasswordHasher passwordHasher, IJwtProvider jwtProvider, ILogger<UserService> logger) : IUserService
 {
     private readonly AppDbContext _context = context;
@@ -62,8 +62,8 @@ public class UserService(AppDbContext context, IMapper mapper, IUserRepository u
         }
     }
 
-    //Аутентификация пользователя
-   public async Task<string> LoginAsync(WorkspaceUserRequest workspaceUserRequest)
+    //Регистрация пользователя
+    public async Task<string> LoginAsync(WorkspaceUserRequest workspaceUserRequest)
     {
         try
         {
@@ -71,8 +71,7 @@ public class UserService(AppDbContext context, IMapper mapper, IUserRepository u
             var workspaceUserDTO = await _userRepository.GetByUserLoginAsync(workspaceUserRequest.Login);
             if (workspaceUserDTO is null)
             {
-                _logger.LogError("Нет такого пользователя");
-                throw new ArgumentNullException("Нет такого пользователя");
+                return "Нет записи";
             }
 
             workspaceUser = _mapper.Map<WorkspaceUser>(workspaceUserDTO);
@@ -85,7 +84,7 @@ public class UserService(AppDbContext context, IMapper mapper, IUserRepository u
             }
 
             var token = _jwtProvider.GenerateToken(workspaceUser);
-        
+
             return token;
         }
         catch (Exception ex)
@@ -102,7 +101,7 @@ public class UserService(AppDbContext context, IMapper mapper, IUserRepository u
             var _hashedPassword = _passwordHasher.Generate(workspaceUserRequest.Password);
             var _workspaceUser = new WorkspaceUser();
             var _workspaceUserDTO = new WorkspaceUserDTO();
-        
+
             _workspaceUser = _mapper.Map<WorkspaceUser>(workspaceUserRequest);
             _workspaceUser.Id = id;
             _workspaceUser.Password = _hashedPassword;
@@ -124,7 +123,7 @@ public class UserService(AppDbContext context, IMapper mapper, IUserRepository u
         {
             var isExistLogin = await _userRepository.GetByUserLoginAsync(workspaceUserRequest.Login);
 
-            if (isExistLogin.Login is not null) 
+            if (isExistLogin.Login is not null)
             {
                 throw new Exception("Данный логин пользователя уже есть в БД");
             }
@@ -132,7 +131,7 @@ public class UserService(AppDbContext context, IMapper mapper, IUserRepository u
             var _hashedPassword = _passwordHasher.Generate(workspaceUserRequest.Password);
             var _workspaceUser = new WorkspaceUser();
             var _workspaceUserDTO = new WorkspaceUserDTO();
-        
+
             _workspaceUser = _mapper.Map<WorkspaceUser>(workspaceUserRequest);
             _workspaceUser.Password = _hashedPassword;
             _workspaceUserDTO = _mapper.Map<WorkspaceUserDTO>(_workspaceUser);
@@ -168,3 +167,4 @@ public class UserService(AppDbContext context, IMapper mapper, IUserRepository u
         //task.ChangeStatus();
     }
 }
+

@@ -112,8 +112,8 @@ public class TaskService (AppDbContext context, IMapper mapper , ITaskRepository
             throw;
         }
     }
-
-    public async Task DeleteAsync(Guid id)
+    
+  public async Task DeleteAsync(Guid id)
     {
         try
         {

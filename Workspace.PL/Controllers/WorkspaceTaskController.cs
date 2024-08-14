@@ -19,6 +19,7 @@ public class WorkspaceTaskController(ITaskService taskService, ILogger<Workspace
     /// Запрос всех задач
     /// </summary>
     [Authorize]
+    [HasPermission([Permission.user, Permission.read])]
     [HttpGet]
     public async Task<ActionResult<IEnumerable<WorkspaceTaskResponse>>> GetAsync()
     {
@@ -38,6 +39,7 @@ public class WorkspaceTaskController(ITaskService taskService, ILogger<Workspace
     /// Запрос задач по ID
     /// </summary>
     [Authorize]
+    [HasPermission([Permission.user, Permission.read])]
     [HttpGet("{id}")]
     public async Task<ActionResult<WorkspaceTaskResponse>> GetAsync(Guid id)
     {
@@ -61,6 +63,7 @@ public class WorkspaceTaskController(ITaskService taskService, ILogger<Workspace
     /// Изменение задачи
     /// </summary>
     [Authorize]
+    [HasPermission([Permission.user, Permission.update])]
     [HttpPut("{id}")]
     public async Task UpdateAsync(Guid id, [FromBody] WorkspaceTaskRequest workspaceTaskRequest)
     {
@@ -95,6 +98,7 @@ public class WorkspaceTaskController(ITaskService taskService, ILogger<Workspace
     /// Создание задачи
     /// </summary>
     [Authorize]
+    [HasPermission([Permission.user, Permission.create])]
     [HttpPost]
     public async Task CreateAsync([FromBody] WorkspaceTaskRequest workspaceTaskRequest)
     {
@@ -128,6 +132,7 @@ public class WorkspaceTaskController(ITaskService taskService, ILogger<Workspace
     /// Удаление задачи
     /// </summary>
     [Authorize]
+    [HasPermission([Permission.user, Permission.delete])]
     [HttpDelete("{id}")]
     public async Task DeleteAsync(Guid id)
     {

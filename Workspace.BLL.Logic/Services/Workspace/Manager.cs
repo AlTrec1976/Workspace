@@ -3,12 +3,30 @@ using Workspace.Entities.Contracts;
 
 namespace Workspace.BLL.Logic;
 
-public class Manager : WorkspaceUser
+public class Manager (IWorkspaceUser workspaceUser, IWorkspaceTask workspaceTask) : IWorkspaceRole
 {
-    public void ChangeStatus(IWorkspaceTask task)
+    private readonly IWorkspaceUser _workspaceUser = workspaceUser;
+    private readonly IWorkspaceTask _workspaceTask = workspaceTask;
+
+
+    public IWorkspaceUser User { get { return _workspaceUser; } }
+
+    public IWorkspaceTask Task { get { return _workspaceTask; } }
+
+    public void ChangeRole()
     {
-        //здесь алгоритм как устанавливает статус мэнеджер
-        //task.ChangeStatus();
-        Console.WriteLine("Я менеджер!");
+        throw new NotImplementedException();
+    }
+    public void ChangeStatus(IWorkspaceTask workspaceTask)
+    {
+        if (workspaceTask.Status == StatusTask.New)
+        {
+            workspaceTask.ChangeStatus(StatusTask.Assigned);
+        }
+
+        if (workspaceTask.Status == StatusTask.JobDown)
+        { 
+            workspaceTask.Status = StatusTask.Completed;
+        }
     }
 }

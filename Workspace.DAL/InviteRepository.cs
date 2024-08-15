@@ -21,21 +21,19 @@ namespace Workspace.DAL
             _logger = logger;
         }
 
-        public async Task<InviteDTO> CheckInviteAsync(InviteDTO inviteDTO)
+        public async Task<Guid> CheckInviteAsync(Guid id)
         {
-            using var connection = GetConnection();
-
             var sql = "SELECT * FROM public.check_invite(@martid)";
 
             var param = new DynamicParameters();
-            param.Add("@martid", inviteDTO.MartId);
+            param.Add("@martid", id);
 
-            var result = await connection.ExecuteAsync(sql, param, commandType: CommandType.StoredProcedure);
+            var result = await QuerySingleAsync<Guid>(sql, param);
 
-            inviteDTO.Id = param.Get<Guid>("@invite_id");
-            inviteDTO.UserId = param.Get<Guid>("@userid");
+            //inviteDTO.Id = param.Get<Guid>("@invite_id");
+            //inviteDTO.UserId = param.Get<Guid>("@userid");
 
-            return inviteDTO;
+            return result;
         }
 
         public async Task<InviteDTO> CreateInviteAsync(InviteDTO inviteDTO)

@@ -46,16 +46,20 @@ public class WorkspaceMartService : IWorkspaceMartService
     /// <param name="workspaceMartRequest"></param>
     public async Task<WorkspaceMartResponse> CreateWorkpaceMartAsync(WorkspaceMartRequest workspaceMartRequest)
     {
+        ///??????не пойму для чего тебе нужно вытаскивать WorkspaceMart, если дальше по коду его не юзаешь??????
+        ///
         //получаем пользователя из БД по ИД
-        var _userResponse = await _userService.GetByIdAsync(workspaceMartRequest.OwnerId);
-        var _workspaceUser = _mapper.Map<WorkspaceUser>(_userResponse);
+        //var _userResponse = await _userService.GetByIdAsync(workspaceMartRequest.OwnerId);
+        //var _workspaceUser = _mapper.Map<WorkspaceUser>(_userResponse);
 
         ///todo: переделать с маппингом
-        var workspace = _mapper.Map<WorkspaceMart>(workspaceMartRequest);
+        //var workspace = await _martRepository.GetMartAsync(workspaceMartRequest.OwnerId);
 
         //var workspace = new WorkspaceMart();
         //workspace.Name = workspaceMartRequest.Name;
         //workspace.Owner = _workspaceUser;
+
+
 
         var workspaceMartDTO = _mapper.Map<WorkspaceMartDTO>(workspaceMartRequest);
 

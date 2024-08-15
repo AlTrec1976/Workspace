@@ -51,26 +51,33 @@ public class WorkspaceMartService : IWorkspaceMartService
         var _workspaceUser = _mapper.Map<WorkspaceUser>(_userResponse);
 
         ///todo: переделать с маппингом
-        var workspace = new WorkspaceMart();
-        workspace.Name = workspaceMartRequest.Name;
-        workspace.Owner = _workspaceUser;
+        var workspace = _mapper.Map<WorkspaceMart>(workspaceMartRequest);
 
-        //делаем дто
-        var workspaceMartDTO = new WorkspaceMartDTO();
+        //var workspace = new WorkspaceMart();
+        //workspace.Name = workspaceMartRequest.Name;
+        //workspace.Owner = _workspaceUser;
 
-        workspaceMartDTO.Name = workspaceMartRequest.Name;
-        workspaceMartDTO.OwnerId = workspaceMartRequest.OwnerId;
+        var workspaceMartDTO = _mapper.Map<WorkspaceMartDTO>(workspaceMartRequest);
+
+        ////делаем дто
+        //var workspaceMartDTO = new WorkspaceMartDTO();
+
+        //workspaceMartDTO.Name = workspaceMartRequest.Name;
+        //workspaceMartDTO.OwnerId = workspaceMartRequest.OwnerId;
 
         //сохраняем в БД
         var result = await _martRepository.CreateMartAsync(workspaceMartDTO);
                 
         //возвращаем WorkspaceMartResponse
-        return new WorkspaceMartResponse()
-        {
-            OwnerId = result.OwnerId,
-            Name = result.Name,
-            Id = result.Id
-        };
+        var workspaceMartResponse = _mapper.Map<WorkspaceMartResponse>(result);
+        //return new WorkspaceMartResponse()
+        //{
+        //    OwnerId = result.OwnerId,
+        //    Name = result.Name,
+        //    Id = result.Id
+        //};
+
+        return workspaceMartResponse;
     }
 
     //создаем таск
@@ -80,18 +87,20 @@ public class WorkspaceMartService : IWorkspaceMartService
         {
             Id =id
         };
+        var _task = _mapper.Map<WorkspaceTask>(workspaceTaskRequest);
+        var _taskDTO = _mapper.Map<WorkspaceTaskDTO>(_task);
 
-        var _task = new WorkspaceTask()
-        {
-            Name = workspaceTaskRequest.Name,
-            Status = StatusTask.New
-        };
+        //var _task = new WorkspaceTask()
+        //{
+        //    Name = workspaceTaskRequest.Name,
+        //    Status = StatusTask.New
+        //};
 
-        var _taskDTO = new WorkspaceTaskDTO()
-        {
-            Name = _task.Name,
-            Status = _task.Status.IdStatus,
-        };
+        //var _taskDTO = new WorkspaceTaskDTO()
+        //{
+        //    Name = _task.Name,
+        //    Status = _task.Status.IdStatus,
+        //};
 
         var _martDTO = new WorkspaceMartDTO() 
         {

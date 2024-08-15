@@ -1,6 +1,6 @@
 CREATE OR REPLACE FUNCTION public.check_invite(
 	martid uuid[])
-    RETURNS SETOF sendbox 
+    RETURNS SETOF invites 
     LANGUAGE 'plpgsql'
     COST 100
     VOLATILE PARALLEL UNSAFE
@@ -9,6 +9,6 @@ CREATE OR REPLACE FUNCTION public.check_invite(
 AS $BODY$
 
 BEGIN
-RETURN QUERY SELECT * FROM sendbox WHERE mart_id=martid;
+RETURN QUERY SELECT * FROM invites WHERE mart_id=martid;
 END;
 $BODY$;

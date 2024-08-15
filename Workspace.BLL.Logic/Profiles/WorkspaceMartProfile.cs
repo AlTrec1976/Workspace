@@ -9,7 +9,7 @@ namespace Workspace.BLL.Logic
         {
             //маппинг из WorkspaceMartRequest в WorkspaceMart
             CreateMap<WorkspaceMartRequest, WorkspaceMart>()
-             .ForPath(dest => dest.Owner.Id, src => src.MapFrom(x => x.OwnerId))
+//             .ForPath(dest => dest.Owner.Id, src => src.MapFrom(x => x.OwnerId))
              .ForMember(dest => dest.Name, src => src.MapFrom(x => x.Name));
 
             //маппинг из WorkspaceMartRequest в WorkspaceMartDTO
@@ -25,9 +25,9 @@ namespace Workspace.BLL.Logic
 
             //маппинг из WorkspaceMartDTO в WorkspaceMart
             CreateMap<WorkspaceMartDTO, WorkspaceMart>()
+//             .ForPath(dest => dest.Owner.Id, src => src.MapFrom(x => x.Id))
              .ForMember(dest => dest.Id, src => src.MapFrom(x => x.Id))
-             .ForMember(dest => dest.Name, src => src.MapFrom(x => x.Name))
-             .ForPath(dest => dest.Owner.Id, src => src.MapFrom(x => x.Id));
+             .ForMember(dest => dest.Name, src => src.MapFrom(x => x.Name));
         }
     }
 }

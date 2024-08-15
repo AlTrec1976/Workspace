@@ -56,5 +56,16 @@ namespace Workspace.DAL
             workspaceTaskDTO.ManagerId = param.Get<Guid>("@owner_id");
             return workspaceTaskDTO;
         }
+
+        public async Task<WorkspaceMart> GetMartAsync(Guid martid)
+        {
+            var sql = "select * from public.get_mart_tasks(wmart_id)";
+            var param = new DynamicParameters();
+            param.Add("@wmart_id", martid);
+            
+            var workspaceMart = await QuerySingleAsync<WorkspaceMart>(sql, param);
+            
+            return workspaceMart;
+        }
     }
 }

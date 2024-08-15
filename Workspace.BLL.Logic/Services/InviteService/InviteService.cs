@@ -40,11 +40,7 @@ public class InviteService(AppDbContext context, IMapper mapper, IInviteReposito
             //};
 
 
-            ///TODO: Перед добавлением, нужно убедиться, что для марта уже не создано приглашение.
-            /// Так как на 1 март, должно быть 1 приглашение.
-            /// НАПИСАЛ, но нужно убедиться, правильно ли понял откуда брать
-            
-            var checkInvite = _inviteRepository.CheckInviteAsync(_inviteDTO);
+            var checkInvite = _inviteRepository.CheckInviteAsync(_inviteDTO.MartId);
 
             if (checkInvite is not null)
             {

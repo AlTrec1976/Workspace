@@ -29,7 +29,7 @@ public class WorkspaceUserProfile : Profile
             .ForMember(dest => dest.Surname,
                 src => src.MapFrom(x => x.Surname));
 
-        //маппинг из сервиса в DTO
+        //маппинг из DTO в сервис
         CreateMap<WorkspaceUserDTO, WorkspaceUserResponse>()
             .ForMember(dest => dest.Id,
                 src => src.MapFrom(x => x.Id))

@@ -20,5 +20,6 @@
     <include file="/Functions/get_mart_tasks.sql"/>
     <include file="/Functions/get_sendbox_users.sql"/>
     <include file="/Functions/update_task_employee.sql"/>
+    <include file="/Functions/check_invite.sql"/>
 
 </databaseChangeLog>

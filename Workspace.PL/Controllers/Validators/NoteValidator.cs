@@ -14,8 +14,5 @@ public class NoteValidator : AbstractValidator<WorkspaceNoteRequest>
         RuleFor(u => u.UserId)
             .NotNull()
             .NotEmpty();
-        RuleFor(u => u.TaskId)
-            .NotNull()
-            .NotEmpty();
     }
 }

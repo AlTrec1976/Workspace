@@ -100,7 +100,7 @@ public class WorkspaceNoteController(INoteService noteService, ILogger<Workspace
     [Authorize]
     [HasPermission([Permission.user, Permission.create])]
     [HttpPost]
-    public async Task CreateAsync([FromBody] WorkspaceNoteRequest WorkspaceNoteRequest)
+    public async Task<WorkspaceNoteResponse> CreateAsync(Guid id, [FromBody] WorkspaceNoteRequest WorkspaceNoteRequest)
     {
         try
         {
@@ -119,7 +119,7 @@ public class WorkspaceNoteController(INoteService noteService, ILogger<Workspace
                 throw new Exception(error);
             }
 
-            await _noteService.CreateAsync(WorkspaceNoteRequest);
+            return await _noteService.CreateAsync(id, WorkspaceNoteRequest);
         }
         catch (Exception ex)
         {

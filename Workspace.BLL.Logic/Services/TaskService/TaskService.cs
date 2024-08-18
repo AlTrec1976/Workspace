@@ -99,6 +99,8 @@ public class TaskService (AppDbContext context, IMapper mapper , ITaskRepository
         {
             var _workspaceTask = new WorkspaceTask();
             var _workspaceTaskDTO = new WorkspaceTaskDTO();
+            var _user = new WorkspaceUser();
+            _workspaceTask.Manager = _user;
 
             _workspaceTask = _mapper.Map<WorkspaceTask>(workspaceTaskRequest);
 
@@ -124,6 +126,51 @@ public class TaskService (AppDbContext context, IMapper mapper , ITaskRepository
             _logger.LogError(ex, "Ошибка в DeleteAsync");
             throw;
         }
+    }
+
+    public async Task<List<WorkspaceTaskResponse>> GetAllTasksForMartAsync(Guid martId)
+    {
+        try
+        {
+            var workspaceTasks = new List<WorkspaceTask>();
+            var workspaceTaskResponse = new List<WorkspaceTaskResponse>();
+
+            var workspaceTaskResponsesDTO = await _taskRepository.GetAllTasksForMartAsync(martId);
+
+            workspaceTasks = _mapper.Map<List<WorkspaceTask>>(workspaceTaskResponsesDTO);
+
+            workspaceTaskResponse = _mapper.Map<List<WorkspaceTaskResponse>>(workspaceTasks);
+
+            return workspaceTaskResponse;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Ошибка в GetAllTasksForMartAsync");
+            throw;
+        }
+    }
+
+    public async Task SetEmployeeAsync(Guid id, WorkspaceTaskRequest workspaceTaskRequest)
+    {
+        try
+        {
+            //проверяем, а есть ли в БД такой объект
+            var workspaceTaskDto = await _taskRepository.GetByIDAsync(id);
+
+            var workspaceTask = new WorkspaceTask();
+            workspaceTask = _mapper.Map<WorkspaceTask>(workspaceTaskRequest);
+            workspaceTask.Id = id;
+            
+            workspaceTaskDto = _mapper.Map<WorkspaceTaskDTO>(workspaceTask);
+            workspaceTaskDto.EmployeeId = workspaceTaskRequest.EmployeeId;
+            await _taskRepository.SetEmployeeAsync(workspaceTaskDto);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Ошибка в UpdateAsync");
+            throw;
+        }
+
     }
 
     //здесь просто меняем статус

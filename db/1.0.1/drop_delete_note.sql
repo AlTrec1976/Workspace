@@ -1,0 +1,1 @@
+DROP PROCEDURE IF EXISTS public.delete_note(uuid);

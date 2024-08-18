@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Workspace.BLL.Logic.Contracts;
 using Workspace.DAL;
 using Workspace.Entities;
+using Workspace.Entities.Contracts;
 
 namespace Workspace.BLL.Logic
 {
@@ -40,5 +41,12 @@ namespace Workspace.BLL.Logic
             }
         }
 
+        public async Task<List<SendboxFullRequest>> GetUsersAsync(Guid martId)
+        {
+            var senboxResponse = new List<SendboxFullRequest>();
+            var _usersDTO = await _sendboxRepository.GetUsersAsync(martId);
+            senboxResponse = _mapper.Map<List<SendboxFullRequest>>(_usersDTO);
+            return senboxResponse;
+        }
     }
 }

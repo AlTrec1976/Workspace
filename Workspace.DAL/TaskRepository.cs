@@ -1,6 +1,5 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-
 using Workspace.Entities;
 
 namespace Workspace.DAL;
@@ -73,7 +72,7 @@ public class TaskRepository : BaseRepository, ITaskRepository
 
     public async Task CreateAsync(WorkspaceTaskDTO workspaceTaskDTO)
     {
-        var sql = "CALL public.create_task(@name, @status, @note, @managerid, @employeeid)";
+        var sql = "CALL public.create_task(@name, @status, @managerid, @employeeid)";
 
         try
         {
@@ -81,7 +80,6 @@ public class TaskRepository : BaseRepository, ITaskRepository
             {
                 name = workspaceTaskDTO.Name,
                 status = workspaceTaskDTO.Status,
-                //note = workspaceTaskDTO.Notes,
                 managerid = workspaceTaskDTO.ManagerId,
                 employeeid = workspaceTaskDTO.EmployeeId
             };
@@ -94,9 +92,7 @@ public class TaskRepository : BaseRepository, ITaskRepository
             throw;
         }
     }
-
-   
-
+    
     public async Task DeleteAsync(Guid taskId)
     {
         var sql = "CALL public.delete_task(@id)";
@@ -109,6 +105,42 @@ public class TaskRepository : BaseRepository, ITaskRepository
         catch (Exception ex)
         {
             _logger.LogError(ex, "Ошибка при удалении задания");
+            throw;
+        }
+    }
+    public async Task<IEnumerable<WorkspaceTaskDTO>> GetAllTasksForMartAsync(Guid martId)
+    {
+        var sql = "SELECT * FROM public.get_mart_tasks(@wmart_id)";
+        var param = new { wmart_id = martId };
+
+        try
+        {
+            return await QueryAsync<WorkspaceTaskDTO>(sql,param);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Ошибка при выводе списка заданий для martId = " + martId.ToString());
+            throw;
+        }
+    }
+
+    public async Task SetEmployeeAsync(WorkspaceTaskDTO workspaceTaskDTO)
+    {
+        var sql = "CALL public.update_task_employee(@taskid, @temployee)";
+
+        try
+        {
+            var param = new
+            {
+                taskid = workspaceTaskDTO.Id,
+                temployee = workspaceTaskDTO.EmployeeId
+            };
+
+            await ExecuteAsync(sql, param);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Ошибка при назначении сотрудника");
             throw;
         }
     }

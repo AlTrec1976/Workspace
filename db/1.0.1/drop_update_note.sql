@@ -1,0 +1,1 @@
+DROP PROCEDURE IF EXISTS public.update_note(uuid, character, uuid);

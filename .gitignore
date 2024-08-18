@@ -397,3 +397,12 @@ FodyWeavers.xsd
 # JetBrains Rider
 *.sln.iml
 /Wallet.Api/appsettings.json
+/.idea/.idea.ALEX_Workspace/.idea
+/db/.idea
+/db/liquibase.properties
+/Workspace.PL/appsettings.json
+/db/.idea
+/db/liquibase.properties
+/db/.vs
+/appsettings.Development.json
+/Workspace.PL/appsettings.Development.json

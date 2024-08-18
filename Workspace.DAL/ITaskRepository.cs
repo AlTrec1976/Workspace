@@ -9,4 +9,6 @@ public interface ITaskRepository
     Task UpdateAsync(WorkspaceTaskDTO workspaceTaskDto);
     Task CreateAsync(WorkspaceTaskDTO workspaceTaskDto);
     Task DeleteAsync(Guid id);
+    Task<IEnumerable<WorkspaceTaskDTO>> GetAllTasksForMartAsync(Guid martId);
+    Task SetEmployeeAsync(WorkspaceTaskDTO workspaceTaskDTO);
 }

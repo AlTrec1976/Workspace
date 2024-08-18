@@ -10,4 +10,6 @@ public interface ITaskService
     Task UpdateAsync(Guid id, WorkspaceTaskRequest workspaceTaskRequest);
     Task CreateAsync(WorkspaceTaskRequest workspaceTaskRequest);
     Task DeleteAsync(Guid id);
+    Task<List<WorkspaceTaskResponse>> GetAllTasksForMartAsync(Guid martId);
+    Task SetEmployeeAsync(Guid id, WorkspaceTaskRequest workspaceTaskRequest);
 }

@@ -104,6 +104,7 @@ public class WorkspaceTaskController(ITaskService taskService, ILogger<Workspace
     {
         try
         {
+            workspaceTaskRequest.Status = workspaceTaskRequest.Status < 1 ? 1 : workspaceTaskRequest.Status;
             var validator = new TaskValidator();
             var validationResult = validator.Validate(workspaceTaskRequest);
 
@@ -143,6 +144,53 @@ public class WorkspaceTaskController(ITaskService taskService, ILogger<Workspace
         catch (Exception ex)
         {
             _logger.LogError(ex, "Ошибка в DeleteAsync");
+            throw;
+        }
+    }
+
+    /// <summary>
+    /// Запрос задач по ид марта
+    /// </summary>
+    /// <remarks>
+    /// Возвращает таски которые созданы для конкретного марта, при этом за тасками
+    /// не закреплен еще исполнитель и статус таска "НОВЫЙ"
+    /// </remarks>
+    /// <param name="martId"></param>
+    /// <returns></returns>
+    [Authorize]
+    [HasPermission([Permission.user, Permission.read])]
+    [HttpGet("workspacemart/{martId}")]
+    public async Task<ActionResult<WorkspaceTaskResponse>> GetAllTasksForMartAsync(Guid martId)
+    {
+        try
+        {
+            var _workspaceTaskResponse = await _taskService.GetAllTasksForMartAsync(martId);
+
+            return Ok(_workspaceTaskResponse);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Ошибка в GetAsync по id");
+            throw;
+        }
+    }
+
+    /// <summary>
+    /// Назначение пользователя за таском
+    /// </summary>
+    /// <param name="id">Ид таска</param>
+    /// <param name="workspaceTaskRequest">Передаем только ид пользователя</param>
+    /// <returns></returns>
+    [HttpPut("workspacemart/{id}")]
+    public async Task SetEmployeeAsync(Guid id, [FromBody] WorkspaceTaskRequest workspaceTaskRequest)
+    {
+        try
+        {
+            await _taskService.SetEmployeeAsync(id, workspaceTaskRequest);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Ошибка в назначении сотрудника за таском");
             throw;
         }
     }

@@ -108,6 +108,17 @@
             <param name="sendboxRequest"></param>
             <returns></returns>
         </member>
+        <member name="M:Workspace.PL.Controllers.WorkspaceSendbox.GetUsersAsync(System.Guid)">
+            <summary>
+            Возвращает пользователей отбранных из песочницы
+            </summary>
+            <remarks>
+            Данные метод возвращает пользоваетелей из песочницы, которые могут
+            быть закреплены за таском
+            </remarks>
+            <param name="martId"></param>
+            <returns></returns>
+        </member>
         <member name="M:Workspace.PL.WorkspaceNoteController.GetAsync">
             <summary>
             Запрос всех заметок
@@ -123,7 +134,7 @@
             Изменение заметки
             </summary>
         </member>
-        <member name="M:Workspace.PL.WorkspaceNoteController.CreateAsync(Workspace.Entities.WorkspaceNoteRequest)">
+        <member name="M:Workspace.PL.WorkspaceNoteController.CreateAsync(System.Guid,Workspace.Entities.WorkspaceNoteRequest)">
             <summary>
             Создание заметки
             </summary>
@@ -157,6 +168,25 @@
             <summary>
             Удаление задачи
             </summary>
+        </member>
+        <member name="M:Workspace.PL.WorkspaceTaskController.GetAllTasksForMartAsync(System.Guid)">
+            <summary>
+            Запрос задач по ид марта
+            </summary>
+            <remarks>
+            Возвращает таски которые созданы для конкретного марта, при этом за тасками
+            не закреплен еще исполнитель и статус таска "НОВЫЙ"
+            </remarks>
+            <param name="martId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Workspace.PL.WorkspaceTaskController.SetEmployeeAsync(System.Guid,Workspace.Entities.WorkspaceTaskRequest)">
+            <summary>
+            Назначение пользователя за таском
+            </summary>
+            <param name="id">Ид таска</param>
+            <param name="workspaceTaskRequest">Передаем только ид пользователя</param>
+            <returns></returns>
         </member>
         <member name="M:Workspace.PL.WorkspaceUserController.LoginAsync(Workspace.Entities.Users.WorkspaceUserLogin)">
             <summary>

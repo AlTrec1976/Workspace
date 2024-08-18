@@ -6,5 +6,4 @@ public interface IWorkspaceNote
 
     public string Note { get; set; }
     public Guid UserId { get; set; }
-    public Guid TaskId { get; set; }
 }

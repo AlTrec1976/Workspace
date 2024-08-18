@@ -52,6 +52,7 @@ var mappingConfig = new MapperConfiguration(mc =>
     mc.AddProfile(new WorkspaceNoteProfile());
     mc.AddProfile(new InviteProfile());
     mc.AddProfile(new WorkspaceMartProfile());
+    mc.AddProfile(new SendboxProfile());
 });
 
 IMapper mapper = mappingConfig.CreateMapper();

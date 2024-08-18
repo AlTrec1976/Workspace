@@ -7,7 +7,12 @@ using Microsoft.Extensions.Logging;
 
 namespace Workspace.BLL.Logic;
 
-public class NoteService(AppDbContext context, IMapper mapper, INoteRepository noteRepository, ILogger<NoteService> logger) : INoteService
+public class NoteService(
+    AppDbContext context, 
+    IMapper mapper, 
+    INoteRepository noteRepository, 
+    ILogger<NoteService> logger
+    ) : INoteService
 {
     private readonly AppDbContext _context = context;
     private readonly INoteRepository _noteRepository = noteRepository;
@@ -78,17 +83,24 @@ public class NoteService(AppDbContext context, IMapper mapper, INoteRepository n
         }
     }
 
-    public async Task CreateAsync(WorkspaceNoteRequest workspaceNoteRequest)
+    public async Task<WorkspaceNoteResponse> CreateAsync(Guid id, WorkspaceNoteRequest workspaceNoteRequest)
     {
         try
         {
+            var _taskDTO = new WorkspaceTaskDTO()
+            {
+                Id = id,
+            };
+
             var _workspaceNote = new WorkspaceNote();
-            var _workspaceNoteDTO = new WorkspaceNoteDTO();
-
             _workspaceNote = _mapper.Map<WorkspaceNote>(workspaceNoteRequest);
-            _workspaceNoteDTO = _mapper.Map<WorkspaceNoteDTO>(_workspaceNote);
+            var _workspaceNoteDTO = _mapper.Map<WorkspaceNoteDTO>(_workspaceNote);
 
-            await _noteRepository.CreateAsync(_workspaceNoteDTO);
+            //_workspaceNoteDTO = _mapper.Map<WorkspaceNoteDTO>(_workspaceNote);
+            _workspaceNoteDTO = await _noteRepository.CreateAsync(_taskDTO, _workspaceNoteDTO);
+
+            var _workspaceNoteResponse = _mapper.Map<WorkspaceNoteResponse>(_workspaceNoteDTO);
+            return _workspaceNoteResponse;
         }
         catch (Exception ex)
         {

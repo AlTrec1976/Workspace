@@ -8,6 +8,6 @@ public interface INoteService
     Task<List<WorkspaceNoteResponse>> GetAllAsync();
     Task<WorkspaceNoteResponse?> GetByIdAsync(Guid id);
     Task UpdateAsync(Guid id, WorkspaceNoteRequest workspaceNoteRequest);
-    Task CreateAsync(WorkspaceNoteRequest workspaceNoteRequest);
+    Task<WorkspaceNoteResponse> CreateAsync(Guid id, WorkspaceNoteRequest workspaceNoteRequest);
     Task DeleteAsync(Guid id);
 }

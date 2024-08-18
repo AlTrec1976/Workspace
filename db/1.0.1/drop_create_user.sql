@@ -1,0 +1,1 @@
+DROP PROCEDURE IF EXISTS public.create_user(character, character, character, character);

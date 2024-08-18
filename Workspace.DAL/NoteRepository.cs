@@ -1,5 +1,7 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Dapper;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using System.Data;
 using Workspace.Entities;
 
 namespace Workspace.DAL;
@@ -47,7 +49,7 @@ public class NoteRepository : BaseRepository, INoteRepository
 
     public async Task UpdateAsync(WorkspaceNoteDTO workspaceNoteDTO)
     {
-        var sql = "CALL public.update_note(@id, @note, @userid, @taskid)";
+        var sql = "CALL public.update_note(@id, @note, @userid)";
 
         try
         {
@@ -56,7 +58,6 @@ public class NoteRepository : BaseRepository, INoteRepository
                 id = workspaceNoteDTO.Id,
                 note = workspaceNoteDTO.Note,
                 userid = workspaceNoteDTO.UserId,
-                taskid = workspaceNoteDTO.TaskId
             };
 
             await ExecuteAsync(sql, param);
@@ -68,20 +69,25 @@ public class NoteRepository : BaseRepository, INoteRepository
         }
     }
 
-    public async Task CreateAsync(WorkspaceNoteDTO workspaceNoteDTO)
+    public async Task<WorkspaceNoteDTO> CreateAsync(WorkspaceTaskDTO workspaceTaskDTO, WorkspaceNoteDTO workspaceNoteDTO)
     {
-        var sql = "CALL public.create_note(@note, @userid, @taskid)";
-
         try
         {
-            var param = new
-            {
-                note = workspaceNoteDTO.Note,
-                userid = workspaceNoteDTO.UserId,
-                taskid = workspaceNoteDTO.TaskId
-            };
+            using var connection = GetConnection();
 
-            await ExecuteAsync(sql, param);
+            var sql = "public.create_note";
+            var param = new DynamicParameters();
+            param.Add("@task_id", workspaceTaskDTO.Id);
+            param.Add("@note_text", workspaceNoteDTO.Note);
+            param.Add("@note_user", workspaceNoteDTO.UserId);
+            param.Add("@note_id", dbType: DbType.Guid,
+                                  direction: ParameterDirection.Output);
+
+            await connection.ExecuteAsync(sql, param, commandType: CommandType.StoredProcedure);
+
+            workspaceNoteDTO.Id = param.Get<Guid>("@note_id");
+
+            return workspaceNoteDTO;
         }
         catch (Exception ex)
         {

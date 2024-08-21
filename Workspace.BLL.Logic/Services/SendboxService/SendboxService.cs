@@ -12,7 +12,7 @@ using Workspace.Entities.Contracts;
 
 namespace Workspace.BLL.Logic
 {
-    public class SendboxService(AppDbContext context, IMapper mapper, ISendboxRepository sendboxRepository, ILogger<TaskService> logger)
+    public class SendboxService(AppDbContext context, IMapper mapper, ISendboxRepository sendboxRepository, ILogger<SendboxService> logger)
                                 : ISendboxService
     {
         private readonly AppDbContext _context = context;
@@ -43,10 +43,19 @@ namespace Workspace.BLL.Logic
 
         public async Task<List<SendboxFullRequest>> GetUsersAsync(Guid martId)
         {
-            var senboxResponse = new List<SendboxFullRequest>();
-            var _usersDTO = await _sendboxRepository.GetUsersAsync(martId);
-            senboxResponse = _mapper.Map<List<SendboxFullRequest>>(_usersDTO);
-            return senboxResponse;
+            try
+            {
+                var senboxResponse = new List<SendboxFullRequest>();
+                var _usersDTO = await _sendboxRepository.GetUsersAsync(martId);
+                senboxResponse = _mapper.Map<List<SendboxFullRequest>>(_usersDTO);
+
+                return senboxResponse;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Ошибка в GetUsersAsync");
+                throw;
+            }
         }
     }
 }

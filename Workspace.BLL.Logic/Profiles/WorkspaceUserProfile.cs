@@ -65,5 +65,10 @@ public class WorkspaceUserProfile : Profile
                 src => src.MapFrom(x => x.Name))
             .ForMember(dest => dest.Surname,
                 src => src.MapFrom(x => x.Surname));
+
+        CreateMap<WorkspaceUserRoleRequest, WorkspaceUserRoleDTO>()
+                .ForMember(dest => dest.Id, src => src.MapFrom(x => x.Id))
+                .ForMember(dest => dest.RoleId, src => src.MapFrom(x => x.RoleId));
+
     }
 }

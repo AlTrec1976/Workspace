@@ -96,7 +96,6 @@ public class NoteService(
             _workspaceNote = _mapper.Map<WorkspaceNote>(workspaceNoteRequest);
             var _workspaceNoteDTO = _mapper.Map<WorkspaceNoteDTO>(_workspaceNote);
 
-            //_workspaceNoteDTO = _mapper.Map<WorkspaceNoteDTO>(_workspaceNote);
             _workspaceNoteDTO = await _noteRepository.CreateAsync(_taskDTO, _workspaceNoteDTO);
 
             var _workspaceNoteResponse = _mapper.Map<WorkspaceNoteResponse>(_workspaceNoteDTO);

@@ -9,10 +9,9 @@ using Workspace.Entities.Contracts;
 
 namespace Workspace.BLL.Logic;
 
-public class UserService(AppDbContext context, IMapper mapper, IUserRepository userRepository,
+public class UserService(IMapper mapper, IUserRepository userRepository,
     IWorkspacePasswordHasher passwordHasher, IJwtProvider jwtProvider, ILogger<UserService> logger) : IUserService
 {
-    private readonly AppDbContext _context = context;
     private readonly IUserRepository _userRepository = userRepository;
     private readonly IMapper _mapper = mapper;
     private readonly IWorkspacePasswordHasher _passwordHasher = passwordHasher;
@@ -123,7 +122,7 @@ public class UserService(AppDbContext context, IMapper mapper, IUserRepository u
         {
             var isExistLogin = await _userRepository.GetByUserLoginAsync(workspaceUserRequest.Login);
 
-            if (isExistLogin.Login is not null)
+            if (isExistLogin?.Login is not null)
             {
                 throw new Exception("Данный логин пользователя уже есть в БД");
             }
@@ -153,6 +152,49 @@ public class UserService(AppDbContext context, IMapper mapper, IUserRepository u
         catch (Exception ex)
         {
             _logger.LogError(ex, "Ошибка в DeleteAsync");
+            throw;
+        }
+    }
+    public async Task CreateUserRoleAsync (WorkspaceUserRoleRequest workspaceUserRoleRequest)
+    {
+        try
+        {
+            var _workspaceUserRoleDTO = _mapper.Map<WorkspaceUserRoleDTO>(workspaceUserRoleRequest);
+            await _userRepository.CreateUserRoleAsync(_workspaceUserRoleDTO);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Ошибка в CreateUserRoleAsync");
+            throw;
+        }
+    }
+    public async Task DeleteUserRoleAsync (WorkspaceUserRoleRequest workspaceUserRoleRequest)
+    {
+        try
+        {
+            var _workspaceUserRoleDTO = _mapper.Map<WorkspaceUserRoleDTO>(workspaceUserRoleRequest);
+            await _userRepository.DeleteUserRoleAsync(_workspaceUserRoleDTO);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Ошибка в DeleteUserRoleAsync");
+            throw;
+        }
+    }
+
+    public async Task<List<RoleResponse>> GetAllRolesAsync(Guid id)
+    {
+        try
+        {
+            var _rolesResponse = new List<RoleResponse>();
+            var _rolesDTO = await _userRepository.GetUserRolesAsync(id);
+            _rolesResponse = _mapper.Map<List<RoleResponse>>(_rolesDTO);
+
+            return _rolesResponse;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Ошибка в GetAllRolesAsync");
             throw;
         }
     }

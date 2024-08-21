@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+    http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd ">
+
+    <include file="/1.0.1_dima/table-users_drop_role.sql"/>
+    <include file="/1.0.1_dima/table-create_users_roles.sql"/>
+    <include file="/1.0.1_dima/drop_get_permission.sql"/>
+    <include file="/1.0.1_dima/get_permission.sql"/>
+    <include file="/1.0.1_dima/drop_create_user.sql"/>
+    <include file="/1.0.1_dima/create_user.sql"/>
+
+</databaseChangeLog>

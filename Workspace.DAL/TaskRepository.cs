@@ -16,10 +16,10 @@ public class TaskRepository : BaseRepository, ITaskRepository
 
     public async Task<IEnumerable<WorkspaceTaskDTO>> GetAllTasksAsync()
     {
-        var sql = "SELECT * FROM public.get_all_tasks()";
-
         try
         {
+            var sql = "SELECT * FROM public.get_all_tasks()";
+
             return await QueryAsync<WorkspaceTaskDTO>(sql);
         }
         catch (Exception ex)
@@ -31,10 +31,10 @@ public class TaskRepository : BaseRepository, ITaskRepository
 
     public async Task<WorkspaceTaskDTO> GetByIDAsync(Guid taskId)
     {
-        var sql = "SELECT * FROM public.get_task(@id)";
-
         try
         {
+            var sql = "SELECT * FROM public.get_task(@id)";
+
             var param = new { id = taskId };
             return await QuerySingleAsync<WorkspaceTaskDTO>(sql, param);
         }
@@ -47,10 +47,10 @@ public class TaskRepository : BaseRepository, ITaskRepository
 
     public async Task UpdateAsync(WorkspaceTaskDTO workspaceTaskDTO)
     {
-        var sql = "CALL public.update_task(@id, @name, @status, @note, @managerid, @employeeid)";
-
         try
         {
+            var sql = "CALL public.update_task(@id, @name, @status, @note, @managerid, @employeeid)";
+
             var param = new
             {
                 id = workspaceTaskDTO.Id,
@@ -72,10 +72,10 @@ public class TaskRepository : BaseRepository, ITaskRepository
 
     public async Task CreateAsync(WorkspaceTaskDTO workspaceTaskDTO)
     {
-        var sql = "CALL public.create_task(@name, @status, @managerid, @employeeid)";
-
         try
         {
+            var sql = "CALL public.create_task(@name, @status, @managerid, @employeeid)";
+
             var param = new
             {
                 name = workspaceTaskDTO.Name,
@@ -95,10 +95,10 @@ public class TaskRepository : BaseRepository, ITaskRepository
     
     public async Task DeleteAsync(Guid taskId)
     {
-        var sql = "CALL public.delete_task(@id)";
-
         try
         {
+            var sql = "CALL public.delete_task(@id)";
+
             var param = new { id = taskId };
             await ExecuteAsync(sql, param);
         }
@@ -110,11 +110,11 @@ public class TaskRepository : BaseRepository, ITaskRepository
     }
     public async Task<IEnumerable<WorkspaceTaskDTO>> GetAllTasksForMartAsync(Guid martId)
     {
-        var sql = "SELECT * FROM public.get_mart_tasks(@wmart_id)";
-        var param = new { wmart_id = martId };
-
         try
         {
+            var sql = "SELECT * FROM public.get_mart_tasks(@wmart_id)";
+            var param = new { wmart_id = martId };
+
             return await QueryAsync<WorkspaceTaskDTO>(sql,param);
         }
         catch (Exception ex)
@@ -126,10 +126,10 @@ public class TaskRepository : BaseRepository, ITaskRepository
 
     public async Task SetEmployeeAsync(WorkspaceTaskDTO workspaceTaskDTO)
     {
-        var sql = "CALL public.update_task_employee(@taskid, @temployee)";
-
         try
         {
+            var sql = "CALL public.update_task_employee(@taskid, @temployee)";
+
             var param = new
             {
                 taskid = workspaceTaskDTO.Id,

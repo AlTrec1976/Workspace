@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Workspace.BLL.Logic;
 using Workspace.Entities;
 
@@ -6,9 +8,10 @@ namespace Workspace.PL.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class WorkspaceSendbox (ISendboxService sendboxService): ControllerBase
+    public class WorkspaceSendbox (ISendboxService sendboxService, ILogger<WorkspaceSendbox> logger) : ControllerBase
     {
         private readonly ISendboxService _sendboxService=sendboxService;
+        private readonly ILogger _logger = logger;
 
         /// <summary>
         /// Добавляем пользователя в песочницу
@@ -22,7 +25,31 @@ namespace Workspace.PL.Controllers
         [HttpPost]
         public async Task CreateAsync([FromBody] SendboxRequest sendboxRequest)
         {
-            await _sendboxService.CreateAsync(sendboxRequest);
+            try
+            {
+                var validator = new SendboxRequestValidator();
+
+                var validationResult = validator.Validate(sendboxRequest);
+
+                if (!validationResult.IsValid)
+                {
+                    var error = string.Empty;
+
+                    foreach (var item in validationResult.Errors)
+                    {
+                        error += $"{item} \n";
+                    }
+
+                    throw new Exception(error);
+                }
+
+                await _sendboxService.CreateAsync(sendboxRequest);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Ошибка в ");
+                throw;
+            }
         }
 
         /// <summary>

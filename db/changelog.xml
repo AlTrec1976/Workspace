@@ -12,5 +12,6 @@
   <include file="/Functions/accumulate-changelog.xml"/>
   <include file="/Procedures/accumulate-changelog.xml"/>
   <include file="/1.0.1/accumulate-changelog.xml"/>
+  <include file="/1.0.1_dima/accumulate-changelog.xml"/>
 
 </databaseChangeLog>

@@ -22,6 +22,7 @@ public static class DIExtensions
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<INoteService, NoteService>();
         services.AddScoped<INoteRepository, NoteRepository>();
+
         //
         services.AddScoped<IWorkspaceMartService, WorkspaceMartService>();
         services.AddScoped<IMartRepository,MartRepository>();
@@ -29,7 +30,8 @@ public static class DIExtensions
         services.AddScoped<IInviteService, InviteService>();
         services.AddScoped<ISendboxRepository,SendboxRepository>();
         services.AddScoped<ISendboxService, SendboxService>();
-
+        services.AddScoped<IAdminRepository, AdminRepository>();
+        services.AddScoped<IAdminService, AdminService>();
         return services;
     }
 

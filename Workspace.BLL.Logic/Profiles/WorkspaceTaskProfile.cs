@@ -15,8 +15,8 @@ public class WorkspaceTaskProfile : Profile
             .ForMember(dest => dest.Name, src => src.MapFrom(x => x.Name))
             .ForMember(dest => dest.Status, src => src.MapFrom((x) => StatusTask.FromValue(x.Status)))
             //.ForMember(dest => dest.Notes, src => src.MapFrom(x => x.Notes));
-        .ForPath(dest => dest.Manager.Id, src => src.MapFrom(x => x.ManagerId))
-        .ForPath(dest => dest.Employee.Id, src => src.MapFrom(x => x.EmployeeId));
+            .ForPath(dest => dest.Manager.Id, src => src.MapFrom(x => x.ManagerId))
+            .ForPath(dest => dest.Employee.Id, src => src.MapFrom(x => x.EmployeeId));
 
         //маппинг из объекта в сервис
         CreateMap<WorkspaceTask, WorkspaceTaskResponse>()
@@ -54,12 +54,12 @@ public class WorkspaceTaskProfile : Profile
                 src => src.MapFrom(x => x.Name))
             .ForMember(dest => dest.Status,
                 src => src.MapFrom((x) => StatusTask.FromValue(x.Status)))
-        //.ForMember(dest => dest.Notes,
-        //   src => src.MapFrom(x => x.Notes));
-        .ForPath(dest => dest.Manager.Id,
-            src => src.MapFrom(x => x.ManagerId))
-        .ForPath(dest => dest.Employee.Id,
-            src => src.MapFrom(x => x.EmployeeId));
+            //.ForMember(dest => dest.Notes,
+            //   src => src.MapFrom(x => x.Notes));
+            .ForPath(dest => dest.Manager.Id,
+                src => src.MapFrom(x => x.ManagerId))
+            .ForPath(dest => dest.Employee.Id,
+                src => src.MapFrom(x => x.EmployeeId));
 
         //из объекта в DTO
         CreateMap<WorkspaceTask, WorkspaceTaskDTO>()
@@ -69,25 +69,18 @@ public class WorkspaceTaskProfile : Profile
                 src => src.MapFrom(x => x.Name))
             .ForMember(dest => dest.Status,
                 src => src.MapFrom(x => x.Status.IdStatus))
-        //.ForMember(dest => dest.Notes,
-        //   src => src.MapFrom(x => x.Notes));
-        .ForPath(dest => dest.ManagerId,
-            src => src.MapFrom(x => x.Manager.Id))
-        .ForPath(dest => dest.EmployeeId,
-            src => src.MapFrom(x => x.Employee.Id));
+            //.ForMember(dest => dest.Notes,
+            //   src => src.MapFrom(x => x.Notes));
+            .ForPath(dest => dest.ManagerId,
+                src => src.MapFrom(x => x.Manager.Id))
+            .ForPath(dest => dest.EmployeeId,
+                src => src.MapFrom(x => x.Employee.Id));
 
         //из WorkspaceTaskShortRequest в объект
         CreateMap<WorkspaceTaskShortRequest, WorkspaceTask>()
-           .ForMember(dest => dest.Name,
+            .ForMember(dest => dest.Name,
                 src => src.MapFrom(x => x.Name))
             .ForMember(dest => dest.Status,
                 src => src.MapFrom((x) => StatusTask.FromValue(x.Status)));
-        //.ForMember(dest => dest.Notes,
-        //   src => src.MapFrom(x => x.Notes));
-        //.ForMember(dest => dest.ManagerId, 
-        //    src => src.MapFrom(x => x.ManagerId))
-        //.ForMember(dest => dest.EmployeeId, 
-        //    src => src.MapFrom(x => x.EmployeeId));
-
     }
 }

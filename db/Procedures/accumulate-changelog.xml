@@ -22,5 +22,15 @@
     <include file="/Procedures/create_task_mart.sql"/>
     <include file="/Procedures/create_workspacemart.sql"/>
     <include file="/Procedures/update_task_employee.sql"/>
-    
+    <include file="/Procedures/create_permission.sql"/>
+    <include file="/Procedures/update_permission.sql"/>
+    <include file="/Procedures/delete_permission.sql"/>
+    <include file="/Procedures/create_role.sql"/>
+    <include file="/Procedures/update_role.sql"/>
+    <include file="/Procedures/delete_role.sql"/>
+    <include file="/Procedures/create_role_permission.sql"/>
+    <include file="/Procedures/delete_role_permission.sql"/>
+    <include file="/Procedures/create_user_role.sql"/>
+    <include file="/Procedures/delete_user_role.sql"/>
+
 </databaseChangeLog>

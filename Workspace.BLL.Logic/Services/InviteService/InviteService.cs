@@ -6,7 +6,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Workspace.BLL.Logic;
 
-public class InviteService(AppDbContext context, IMapper mapper, IInviteRepository inviteRepository, ILogger<TaskService> logger) : IInviteService
+public class InviteService(AppDbContext context, IMapper mapper, IInviteRepository inviteRepository, ILogger<InviteService> logger) : IInviteService
 {
     private readonly AppDbContext _context = context;
     private readonly IInviteRepository _inviteRepository = inviteRepository;
@@ -22,23 +22,7 @@ public class InviteService(AppDbContext context, IMapper mapper, IInviteReposito
             var _invite = _mapper.Map<Invite>(inviteRequest);
             _invite.Id = Guid.Empty;
 
-            //var _invite = new Invite()
-            //{ 
-            //    Id = Guid.Empty,
-            //    InviteText = inviteRequest.InviteText,
-            //    WorkspaceMartObj = new WorkspaceMart() { Id = inviteRequest.MartId},
-            //    IsOppened = true
-            //};
-
             var _inviteDTO = _mapper.Map<InviteDTO>(_invite);
-
-            //var _inviteDTO = new InviteDTO() 
-            //{
-            //    InviteText = _invite.InviteText,
-            //    IsOppened = _invite.IsOppened,
-            //    MartId = _invite.WorkspaceMartObj.Id
-            //};
-
 
             var checkInvite = _inviteRepository.CheckInviteAsync(_inviteDTO.MartId);
 
@@ -51,15 +35,6 @@ public class InviteService(AppDbContext context, IMapper mapper, IInviteReposito
             var _inviteResponse = _mapper.Map<InviteResponse>(_inviteDTO);
 
             return _inviteResponse;
-
-            //return new InviteResponse()
-            //{
-            //    InviteText = _inviteDTO.InviteText,
-            //    IsOppened = _inviteDTO.IsOppened,
-            //    MartId = _inviteDTO.MartId,
-            //    UserId = _inviteDTO.UserId,
-            //    Id = _inviteDTO.Id
-            //};
         }
         catch (Exception ex)
         {
@@ -70,30 +45,49 @@ public class InviteService(AppDbContext context, IMapper mapper, IInviteReposito
 
     public async Task AcceptInviteAsync(InviteDetailRequest inviteDetailRequest)
     {
-        var _inviteDetailDTO = _mapper.Map<InviteDetailDTO>(inviteDetailRequest);
+        try
+        {
+            var _inviteDetailDTO = _mapper.Map<InviteDetailDTO>(inviteDetailRequest);
 
-        //var _inviteDetailDTO = new InviteDetailDTO() 
-        //{
-        //    Comments = inviteDetailRequest.Comments,
-        //    InviteID = inviteDetailRequest.InviteID,
-        //    UserID = inviteDetailRequest.UserID
-        //};
-
-        await _inviteRepository.AcceptInviteAsync(_inviteDetailDTO);
+            await _inviteRepository.AcceptInviteAsync(_inviteDetailDTO);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Ошибка в AcceptInviteAsync");
+            throw;
+        }
     }
     public async Task<List<InviteResponse>> GetAllInvitesAsync()
     {
-        var _invites = new List<InviteResponse>();
-        var _invitekResponsesDTO = await _inviteRepository.GetAllInvitesAsync();
-         _invites = _mapper.Map<List<InviteResponse>> (_invitekResponsesDTO);
-        return _invites;
+        try
+        {
+            var _invites = new List<InviteResponse>();
+            var _invitekResponsesDTO = await _inviteRepository.GetAllInvitesAsync();
+             _invites = _mapper.Map<List<InviteResponse>> (_invitekResponsesDTO);
+
+            return _invites;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Ошибка в GetAllInvitesAsync");
+            throw;
+        }
     }
 
     public async Task<List<InviteResponse>> GetAcceptedInvitesAsync(Guid martId)
     {
-        var _invites = new List<InviteResponse>();
-        var _invitekResponsesDTO = await _inviteRepository.GetAcceptedInvitesAsync(martId);
-        _invites = _mapper.Map<List<InviteResponse>>(_invitekResponsesDTO);
-        return _invites;
+        try
+        {
+            var _invites = new List<InviteResponse>();
+            var _invitekResponsesDTO = await _inviteRepository.GetAcceptedInvitesAsync(martId);
+            _invites = _mapper.Map<List<InviteResponse>>(_invitekResponsesDTO);
+
+            return _invites;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Ошибка в GetAcceptedInvitesAsync");
+            throw;
+        }
     }
 }

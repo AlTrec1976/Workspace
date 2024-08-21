@@ -18,10 +18,10 @@ public class NoteRepository : BaseRepository, INoteRepository
 
     public async Task<IEnumerable<WorkspaceNoteDTO>> GetAllNotesAsync()
     {
-        var sql = "SELECT * FROM public.get_all_notes()";
-
         try
         {
+            var sql = "SELECT * FROM public.get_all_notes()";
+
             return await QueryAsync<WorkspaceNoteDTO>(sql);
         }
         catch (Exception ex)
@@ -33,10 +33,10 @@ public class NoteRepository : BaseRepository, INoteRepository
 
     public async Task<WorkspaceNoteDTO> GetByIDAsync(Guid noteId)
     {
-        var sql = "SELECT * FROM public.get_note(@id)";
-
         try
         {
+            var sql = "SELECT * FROM public.get_note(@id)";
+
             var param = new { id = noteId };
             return await QuerySingleAsync<WorkspaceNoteDTO>(sql, param);
         }
@@ -49,10 +49,10 @@ public class NoteRepository : BaseRepository, INoteRepository
 
     public async Task UpdateAsync(WorkspaceNoteDTO workspaceNoteDTO)
     {
-        var sql = "CALL public.update_note(@id, @note, @userid)";
-
         try
         {
+            var sql = "CALL public.update_note(@id, @note, @userid)";
+
             var param = new
             {
                 id = workspaceNoteDTO.Id,
@@ -98,10 +98,10 @@ public class NoteRepository : BaseRepository, INoteRepository
 
     public async Task DeleteAsync(Guid noteId)
     {
-        var sql = "CALL public.delete_note(@id)";
-
         try
         {
+            var sql = "CALL public.delete_note(@id)";
+
             var param = new { id = noteId };
             await ExecuteAsync(sql, param);
         }

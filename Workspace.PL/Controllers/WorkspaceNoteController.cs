@@ -69,7 +69,7 @@ public class WorkspaceNoteController(INoteService noteService, ILogger<Workspace
     {
         try
         {
-            var validator = new NoteValidator();
+            var validator = new NoteRequestValidator();
             var validationResult = validator.Validate(WorkspaceNoteRequest);
 
             if (!validationResult.IsValid)
@@ -104,7 +104,7 @@ public class WorkspaceNoteController(INoteService noteService, ILogger<Workspace
     {
         try
         {
-            var validator = new NoteValidator();
+            var validator = new NoteRequestValidator();
             var validationResult = validator.Validate(WorkspaceNoteRequest);
 
             if (!validationResult.IsValid)

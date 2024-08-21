@@ -19,5 +19,7 @@
     <include file="/1.0.1/create_note.sql"/>
     <include file="/1.0.1/update_note.sql"/>
     <include file="/1.0.1/delete_note.sql"/>
+    <include file="/1.0.1/drop_delete_user.sql"/>
+    <include file="/1.0.1/delete_user.sql"/>
 
 </databaseChangeLog>

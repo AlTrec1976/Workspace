@@ -1,0 +1,1 @@
+DROP PROCEDURE public.create_user(IN userlogin character, IN userpassword character, IN username character, IN usersurname character);

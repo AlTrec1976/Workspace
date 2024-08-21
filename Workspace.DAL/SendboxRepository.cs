@@ -14,24 +14,32 @@ namespace Workspace.DAL
 
         public async Task CreateSendboxAsync(SendboxDTO sendboxDTO)
         {
-            using var connection = GetConnection();
+            try
+            {
+                using var connection = GetConnection();
 
-            var sql = "public.create_sendbox";
+                var sql = "public.create_sendbox";
 
-            var param = new DynamicParameters();
-            param.Add("@inviteid", sendboxDTO.InviteId);
-            param.Add("@martid", sendboxDTO.MartId);
-            param.Add("@userid", sendboxDTO.UserId);
+                var param = new DynamicParameters();
+                param.Add("@inviteid", sendboxDTO.InviteId);
+                param.Add("@martid", sendboxDTO.MartId);
+                param.Add("@userid", sendboxDTO.UserId);
 
-            await connection.ExecuteAsync(sql, param, commandType: CommandType.StoredProcedure);
+                await connection.ExecuteAsync(sql, param, commandType: CommandType.StoredProcedure);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Ошибка в CreateSendboxAsync");
+                throw;
+            }
         }
 
         public async Task<IEnumerable<SendboxFullDTO>> GetUsersAsync(Guid martId)
         {
-            var sql = "SELECT * FROM public.get_sendbox_users(@wmart_id)";
-
             try
             {
+                var sql = "SELECT * FROM public.get_sendbox_users(@wmart_id)";
+
                 var param = new { wmart_id = martId };
                 return await QueryAsync<SendboxFullDTO>(sql, param);
 

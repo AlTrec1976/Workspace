@@ -11,5 +11,7 @@ public interface IUserRepository
     Task DeleteAsync(Guid id);
     Task<WorkspaceUserDTO?> GetByUserLoginAsync(string userLogin);
     Task<HashSet<Permission>> GetUserPermission(Guid userID);
-
+    Task CreateUserRoleAsync(WorkspaceUserRoleDTO workspaceUserRoleDto);
+    Task DeleteUserRoleAsync(WorkspaceUserRoleDTO workspaceUserRoleDto);
+    Task<IEnumerable<RoleDTO>> GetUserRolesAsync(Guid id);
 }

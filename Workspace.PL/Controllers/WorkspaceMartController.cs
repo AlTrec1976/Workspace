@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
 using Workspace.BLL.Logic;
@@ -15,9 +17,10 @@ namespace Workspace.PL.Controllers
     /// <param name="workspaceMartService"></param>
     [Route("api/[controller]")]
     [ApiController]
-    public class WorkspaceMartController(IWorkspaceMartService workspaceMartService) : ControllerBase
+    public class WorkspaceMartController(IWorkspaceMartService workspaceMartService, ILogger<WorkspaceMartController> logger) : ControllerBase
     {
         private readonly IWorkspaceMartService _workspaceMartService = workspaceMartService;
+        private readonly ILogger _logger = logger;
 
         /// <summary>
         /// Создание WorkspaceMart
@@ -34,7 +37,31 @@ namespace Workspace.PL.Controllers
         [HttpPost]
         public async Task <WorkspaceMartResponse> CreateAsyncAsync([FromBody] WorkspaceMartRequest workspaceMartRequest)
         {
-            return await _workspaceMartService.CreateWorkpaceMartAsync(workspaceMartRequest);
+            try
+            {
+                var validator = new MartRequestValidator();
+
+                var validationResult = validator.Validate(workspaceMartRequest);
+
+                if (!validationResult.IsValid)
+                {
+                    var error = string.Empty;
+
+                    foreach (var item in validationResult.Errors)
+                    {
+                        error += $"{item} \n";
+                    }
+
+                    throw new Exception(error);
+                }
+
+                return await _workspaceMartService.CreateWorkpaceMartAsync(workspaceMartRequest);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Ошибка в CreateAsyncAsync");
+                throw;
+            }
         }
 
         /// <summary>
@@ -53,8 +80,31 @@ namespace Workspace.PL.Controllers
         [HttpPost("{id}")]
         public async Task<WorkspaceTaskResponse> AddNewTaskAsync(Guid id, [FromBody] WorkspaceTaskShortRequest workspaceTaskRequest)
         {
-            
-            return await _workspaceMartService.CreateTaskAsync(id, workspaceTaskRequest);
+            try
+            {
+                var validator = new TaskShortRequestValidator();
+
+                var validationResult = validator.Validate(workspaceTaskRequest);
+
+                if (!validationResult.IsValid)
+                {
+                    var error = string.Empty;
+
+                    foreach (var item in validationResult.Errors)
+                    {
+                        error += $"{item} \n";
+                    }
+
+                    throw new Exception(error);
+                }
+
+                return await _workspaceMartService.CreateTaskAsync(id, workspaceTaskRequest);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Ошибка в AddNewTaskAsync");
+                throw;
+            }
         }
     }
 }

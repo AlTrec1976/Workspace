@@ -9,5 +9,6 @@ public enum Permission
     admin,
     user,
     manager,
-    empl
-}
+    employee,
+    sysadmin
+} 

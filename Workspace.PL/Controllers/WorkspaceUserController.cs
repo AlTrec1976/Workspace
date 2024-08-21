@@ -194,4 +194,40 @@ public class WorkspaceUserController(IUserService userService, ILogger<Workspace
             throw;
         }
     }
+
+    /// <summary>
+    /// Назначение пользователю роли
+    /// </summary>
+    /// <param name="workspaceUserRoleRequest"></param>
+    /// <returns></returns>
+    [AllowAnonymous]
+    [HttpPost("roles")]
+    public async Task CreateRolePermissionAsync([FromBody] WorkspaceUserRoleRequest workspaceUserRoleRequest)
+    {
+        await _userService.CreateUserRoleAsync(workspaceUserRoleRequest);
+    }
+
+    /// <summary>
+    /// Удаление роли у пользователя
+    /// </summary>
+    /// <param name="workspaceUserRoleRequest"></param>
+    /// <returns></returns>
+    [AllowAnonymous]
+    [HttpDelete("roles")]
+    public async Task DeleteRolePermissionAsync([FromBody] WorkspaceUserRoleRequest workspaceUserRoleRequest)
+    {
+        await _userService.DeleteUserRoleAsync(workspaceUserRoleRequest);
+    }
+
+    /// <summary>
+    /// Возвращает все роли назначенные пользователю
+    /// </summary>
+    /// <param name="id">Ид пользователя</param>
+    /// <returns></returns>
+    [AllowAnonymous]
+    [HttpGet("roles")]
+    public async Task<List<RoleResponse>> GetUserRolesAsync(Guid id)
+    {
+        return await _userService.GetAllRolesAsync(id);
+    }
 }

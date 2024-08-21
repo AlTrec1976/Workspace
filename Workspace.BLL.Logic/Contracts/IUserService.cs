@@ -12,4 +12,7 @@ public interface IUserService
     Task CreateAsync(WorkspaceUserRequest workspaceUserRequest);
     Task DeleteAsync(Guid id);
     void ChangeStatus(IWorkspaceUser user, IWorkspaceTask task);
+    Task CreateUserRoleAsync(WorkspaceUserRoleRequest workspaceUserRoleRequest);
+    Task DeleteUserRoleAsync(WorkspaceUserRoleRequest workspaceUserRoleRequest);
+    Task<List<RoleResponse>> GetAllRolesAsync(Guid id);
 }

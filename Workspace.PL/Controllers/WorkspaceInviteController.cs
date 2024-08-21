@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System.ComponentModel.DataAnnotations;
 using Workspace.BLL.Logic;
 using Workspace.Entities;
@@ -7,10 +9,11 @@ namespace Workspace.PL.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class WorkspaceInviteController(IInviteService inviteService) : ControllerBase
+    public class WorkspaceInviteController(IInviteService inviteService, ILogger<WorkspaceInviteController> logger) : ControllerBase
     {
         
         private readonly IInviteService _inviteService = inviteService;
+        private readonly ILogger _logger = logger;
 
         /// <summary>
         /// Создание приглашения
@@ -24,7 +27,31 @@ namespace Workspace.PL.Controllers
         [HttpPost]
         public async Task<InviteResponse> CreateAsync([FromBody] InviteRequest inviteRequest)
         {
-            return await _inviteService.CreateAsync(inviteRequest);
+            try
+            {
+                var validator = new InviteRequestValidator();
+
+                var validationResult = validator.Validate(inviteRequest);
+
+                if (!validationResult.IsValid)
+                {
+                    var error = string.Empty;
+
+                    foreach (var item in validationResult.Errors)
+                    {
+                        error += $"{item} \n";
+                    }
+
+                    throw new Exception(error);
+                }
+
+                return await _inviteService.CreateAsync(inviteRequest);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Ошибка в CreateAsync");
+                throw;
+            }
         }
 
         /// <summary>
@@ -39,7 +66,15 @@ namespace Workspace.PL.Controllers
         [HttpGet("/GetAllInvites")]
         public async Task<List<InviteResponse>> GetAllInvitesAsync()
         {
-            return await _inviteService.GetAllInvitesAsync();
+            try
+            {
+                return await _inviteService.GetAllInvitesAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Ошибка в GetAllInvitesAsync");
+                throw;
+            }
         }
 
         /// <summary>
@@ -61,7 +96,31 @@ namespace Workspace.PL.Controllers
         [HttpPost("/AcceptInvite")]
         public async Task AcceptInvite([FromBody] InviteDetailRequest? inviteDetailRequest)
         {
-            await _inviteService.AcceptInviteAsync(inviteDetailRequest);
+            try
+            {
+                var validator = new InviteDetailRequestValidator();
+
+                var validationResult = validator.Validate(inviteDetailRequest);
+
+                if (!validationResult.IsValid)
+                {
+                    var error = string.Empty;
+
+                    foreach (var item in validationResult.Errors)
+                    {
+                        error += $"{item} \n";
+                    }
+
+                    throw new Exception(error);
+                }
+
+                await _inviteService.AcceptInviteAsync(inviteDetailRequest);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Ошибка в AcceptInvite");
+                throw;
+            }
         }
 
         /// <summary>
@@ -77,7 +136,15 @@ namespace Workspace.PL.Controllers
         [HttpGet("/AcceptInvite/{martId}")]
         public async Task<List<InviteResponse>> GetAcceptedInvitesAsync(Guid martId)
         {
-           return await _inviteService.GetAcceptedInvitesAsync(martId);
+            try
+            {
+                return await _inviteService.GetAcceptedInvitesAsync(martId);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Ошибка в GetAcceptedInvitesAsync");
+                throw;
+            }
         }
     }
 }

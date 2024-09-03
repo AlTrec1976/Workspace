@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
-using Workspace.BLL.Logic;
+
 using Workspace.BLL.Logic.Contracts;
 using Workspace.Entities;
 using Workspace.Entities.Users;
@@ -39,18 +39,8 @@ public class WorkspaceUserController(IUserService userService, ILogger<Workspace
             _workspaceUserRequest.Password = userLogin.Password;
             //создать токен
             var _token = await _userService.LoginAsync(_workspaceUserRequest);
-
-            Response.Cookies.Append("maxima-sec-cookies", _token, new CookieOptions
-            {
-                Expires = DateTimeOffset.UtcNow.AddDays(5),
-                HttpOnly = true,
-                IsEssential = true,
-                Secure = true,
-                SameSite = SameSiteMode.None
-            });
        
             return Ok(_token);
-            //return Ok();
         }
         catch (Exception ex)
         {
@@ -64,20 +54,11 @@ public class WorkspaceUserController(IUserService userService, ILogger<Workspace
     /// Запросить всех пользователей
     /// </summary>
     [Authorize]
-    [HasPermission([Permission.read, Permission.admin])]
+    [HasPermission([Permission.admin,Permission.read])]
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<WorkspaceUserResponse>>> GetAsync()
+    public IAsyncEnumerable<WorkspaceUserResponse> GetAsync()
     {
-        try
-        {
-            var _workspaceUserResponse = await _userService.GetAllAsync();
-            return Ok(_workspaceUserResponse);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Ошибка в GetAsync");
-            throw;
-        }
+        return _userService.GetAllAsync();
     }
 
     // GET api/<WorkspaceUserController>/5
@@ -85,7 +66,7 @@ public class WorkspaceUserController(IUserService userService, ILogger<Workspace
     /// Запрос пользователя по ID
     /// </summary>
     [Authorize]
-    [HasPermission([Permission.read, Permission.admin])]
+    [HasPermission([Permission.admin, Permission.read])]
     [HttpGet("{id}")]
     public async Task<ActionResult<WorkspaceUserResponse>> GetAsync(Guid id)
     {
@@ -110,7 +91,7 @@ public class WorkspaceUserController(IUserService userService, ILogger<Workspace
     /// Изменение данных пользователя
     /// </summary>
     [Authorize]
-    [HasPermission([Permission.update, Permission.admin])]
+    [HasPermission([Permission.admin, Permission.update])]
     [HttpPut("{id}")]
     public async Task UpdateAsync(Guid id, [FromBody] WorkspaceUserRequest workspaceUserRequest)
     {
@@ -144,8 +125,8 @@ public class WorkspaceUserController(IUserService userService, ILogger<Workspace
     /// <summary>
     /// Создание пользователя
     /// </summary>
-    [AllowAnonymous]
-    [HasPermission([Permission.create, Permission.admin])]
+    [Authorize]
+    [HasPermission([Permission.admin, Permission.create])]
     [HttpPost]
     public async Task CreateAsync([FromBody] WorkspaceUserRequest workspaceUserRequest)
     {
@@ -180,7 +161,7 @@ public class WorkspaceUserController(IUserService userService, ILogger<Workspace
     /// Удаление пользователя
     /// </summary>
     [Authorize]
-    [HasPermission([Permission.delete, Permission.admin])]
+    [HasPermission([Permission.admin, Permission.delete])]
     [HttpDelete("{id}")]
     public async Task DeleteAsync(Guid id)
     {
@@ -200,7 +181,8 @@ public class WorkspaceUserController(IUserService userService, ILogger<Workspace
     /// </summary>
     /// <param name="workspaceUserRoleRequest"></param>
     /// <returns></returns>
-    [AllowAnonymous]
+    [Authorize]
+    [HasPermission([Permission.admin, Permission.create])]
     [HttpPost("roles")]
     public async Task CreateRolePermissionAsync([FromBody] WorkspaceUserRoleRequest workspaceUserRoleRequest)
     {
@@ -212,7 +194,8 @@ public class WorkspaceUserController(IUserService userService, ILogger<Workspace
     /// </summary>
     /// <param name="workspaceUserRoleRequest"></param>
     /// <returns></returns>
-    [AllowAnonymous]
+    [Authorize]
+    [HasPermission([Permission.admin, Permission.delete])]
     [HttpDelete("roles")]
     public async Task DeleteRolePermissionAsync([FromBody] WorkspaceUserRoleRequest workspaceUserRoleRequest)
     {
@@ -224,7 +207,8 @@ public class WorkspaceUserController(IUserService userService, ILogger<Workspace
     /// </summary>
     /// <param name="id">Ид пользователя</param>
     /// <returns></returns>
-    [AllowAnonymous]
+    [Authorize]
+    [HasPermission([Permission.admin, Permission.read])]
     [HttpGet("roles")]
     public async Task<List<RoleResponse>> GetUserRolesAsync(Guid id)
     {

@@ -2,33 +2,21 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System.Data;
+
 using Workspace.Entities;
 
 namespace Workspace.DAL;
 
-public class NoteRepository : BaseRepository, INoteRepository
+public class NoteRepository(ILogger<TaskRepository> logger, IConfiguration configuration)  
+    : BaseRepository(logger, configuration), INoteRepository
 {
-    private readonly ILogger _logger;
+    private readonly ILogger _logger = logger;
 
-    public NoteRepository(ILogger<TaskRepository> logger, IConfiguration configuration)
-        : base(logger, configuration)
+    public IAsyncEnumerable<WorkspaceNoteDTO> GetAllNotesAsync()
     {
-        _logger = logger;
-    }
+        var sql = "SELECT * FROM public.get_all_notes()";
 
-    public async Task<IEnumerable<WorkspaceNoteDTO>> GetAllNotesAsync()
-    {
-        try
-        {
-            var sql = "SELECT * FROM public.get_all_notes()";
-
-            return await QueryAsync<WorkspaceNoteDTO>(sql);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Ошибка при выводе списка заданий");
-            throw;
-        }
+        return Query<WorkspaceNoteDTO>(sql);
     }
 
     public async Task<WorkspaceNoteDTO> GetByIDAsync(Guid noteId)

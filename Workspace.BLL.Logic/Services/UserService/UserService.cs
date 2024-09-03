@@ -18,25 +18,11 @@ public class UserService(IMapper mapper, IUserRepository userRepository,
     private readonly IJwtProvider _jwtProvider = jwtProvider;
     private readonly ILogger _logger = logger;
 
-    public async Task<List<WorkspaceUserResponse>> GetAllAsync()
+    public async IAsyncEnumerable<WorkspaceUserResponse> GetAllAsync()
     {
-        try
+        await foreach (var item in _userRepository.GetAllUsersAsync())
         {
-            var workspaceUsers = new List<WorkspaceUserResponse>();
-            var workspaceUserResponse = new List<WorkspaceUserResponse>();
-
-            var workspaceUserResponsesDTO = await _userRepository.GetAllUsersAsync();
-
-            workspaceUsers = _mapper.Map<List<WorkspaceUserResponse>>(workspaceUserResponsesDTO);
-
-            workspaceUserResponse = _mapper.Map<List<WorkspaceUserResponse>>(workspaceUsers);
-
-            return workspaceUsers;
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Ошибка в GetAllAsync");
-            throw;
+            yield return _mapper.Map<WorkspaceUserResponse>(item);
         }
     }
 

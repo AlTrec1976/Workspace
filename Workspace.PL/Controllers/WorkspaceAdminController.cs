@@ -1,6 +1,6 @@
-﻿using FluentValidation;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+
 using Workspace.BLL.Logic;
 using Workspace.Entities;
 
@@ -19,6 +19,8 @@ namespace Workspace.PL.Controllers
         /// </summary>
         /// <param name="roleRequest"></param>
         /// <returns></returns>
+        [Authorize]
+        [HasPermission([Permission.sysadmin])]
         [HttpPost("/roles")]
         public async Task<RoleResponse> CreateRoleAsync([FromBody] RoleRequest roleRequest)
         {
@@ -53,6 +55,8 @@ namespace Workspace.PL.Controllers
         /// </summary>
         /// <param name="roleResponse"></param>
         /// <returns></returns>
+        [Authorize]
+        [HasPermission([Permission.sysadmin])]
         [HttpPut("/roles")]
         public async Task UpdateRoleAsync([FromBody] RoleResponse roleResponse)
         {
@@ -92,6 +96,8 @@ namespace Workspace.PL.Controllers
         /// </remarks>
         /// <param name="id">Идентификатор роли</param>
         /// <returns></returns>
+        [Authorize]
+        [HasPermission([Permission.sysadmin])]
         [HttpDelete("/roles/{id}")]
         public async Task DeleteRoleAsync(int id)
         {
@@ -106,11 +112,13 @@ namespace Workspace.PL.Controllers
                 throw;
             }
         }
-        
+
         /// <summary>
         /// Все роли существующие в системе
         /// </summary>
         /// <returns></returns>
+        [Authorize]
+        [HasPermission([Permission.admin, Permission.read])]
         [HttpGet("/roles")]
         public async Task<List<RoleResponse>> GetAllRolesAsync()
         {
@@ -136,6 +144,8 @@ namespace Workspace.PL.Controllers
         /// </remarks>
         /// <param name="permissionRequest"></param>
         /// <returns></returns>
+        [Authorize]
+        [HasPermission([Permission.sysadmin])]
         [HttpPost("/permissions")]
         public async Task<WorkspacePermissionResponse> CreatePermissionAsync([FromBody] WorkspacePermissionRequest permissionRequest) 
         {
@@ -171,6 +181,8 @@ namespace Workspace.PL.Controllers
         /// </summary>
         /// <param name="permissionResponse"></param>
         /// <returns></returns>
+        [Authorize]
+        [HasPermission([Permission.sysadmin])]
         [HttpPut("/permissions")]
         public async Task UpdatePermissionAsync([FromBody] WorkspacePermissionResponse permissionResponse)
         {
@@ -208,6 +220,8 @@ namespace Workspace.PL.Controllers
         /// </remarks>
         /// <param name="id">Идентификатор разрешения</param>
         /// <returns></returns>
+        [Authorize]
+        [HasPermission([Permission.sysadmin])]
         [HttpDelete("/permissions/{id}")]
         public async Task DeletePermission(int id)
         {
@@ -227,6 +241,8 @@ namespace Workspace.PL.Controllers
         /// Возвращает все разрешения в системе
         /// </summary>
         /// <returns></returns>
+        [Authorize]
+        [HasPermission([Permission.sysadmin])]
         [HttpGet("/permissions")]
         public async Task<List<WorkspacePermissionResponse>> GetAllPermissionsAsync()
         {
@@ -249,6 +265,8 @@ namespace Workspace.PL.Controllers
         /// </summary>
         /// <param name="rolePermissionRequest"></param>
         /// <returns></returns>
+        [Authorize]
+        [HasPermission([Permission.sysadmin])]
         [HttpPost]
         public async Task CreateRolePermissionAsync([FromBody] RolePermissionRequest rolePermissionRequest)
         {
@@ -267,6 +285,8 @@ namespace Workspace.PL.Controllers
         /// </summary>
         /// <param name="rolePermissionRequest"></param>
         /// <returns></returns>
+        [Authorize]
+        [HasPermission([Permission.sysadmin])]
         [HttpDelete]
         public async Task DeleteRolePermissionAsync([FromBody] RolePermissionRequest rolePermissionRequest)
         {
@@ -286,6 +306,8 @@ namespace Workspace.PL.Controllers
         /// </summary>
         /// <param name="id">Идентификатор роли</param>
         /// <returns></returns>
+        [Authorize]
+        [HasPermission([Permission.sysadmin])]
         [HttpGet("{id}")]
         public async Task<List<WorkspacePermissionResponse>> GetRolePermissionsAsync(int id)
         {

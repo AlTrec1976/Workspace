@@ -10,6 +10,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PL", "PL", "{E1CA0BCF-251B-497B-851F-5E19F14A6504}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DAL", "DAL", "{44DE227A-3128-4AE2-A014-025841A4FCAB}"
+	ProjectSection(SolutionItems) = preProject
+		Workspace.DAL\IInviteRepository.cs = Workspace.DAL\IInviteRepository.cs
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Workspace.PL", "Workspace.PL\Workspace.PL.csproj", "{712AAAC4-1171-4F1C-8435-64D7D5A1897B}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -38,9 +41,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Workspace.Helpers", "Worksp
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{493A7E72-E9CF-4A5E-A73E-A20C4A13D68D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Workspace.BLL.Tests", "Workspace.BLL.Tests\Workspace.BLL.Tests.csproj", "{DCB83667-A57A-41B0-B691-4F54735377F4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Workspace.BLL.Tests", "Workspace.BLL.Tests\Workspace.BLL.Tests.csproj", "{DCB83667-A57A-41B0-B691-4F54735377F4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Workspace.Tests.DI", "Workspace.Tests.DI\Workspace.Tests.DI.csproj", "{C27FEA8A-D8FA-4604-AB2C-5B82536D7032}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Workspace.Tests.DI", "Workspace.Tests.DI\Workspace.Tests.DI.csproj", "{C27FEA8A-D8FA-4604-AB2C-5B82536D7032}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

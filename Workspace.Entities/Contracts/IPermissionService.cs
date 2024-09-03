@@ -1,5 +1,3 @@
-using Workspace.Entities;
-
 namespace Workspace.Entities.Contracts;
 
 public interface IPermissionService

@@ -40,7 +40,7 @@ public class WorkspaceTaskProfile : Profile
             .ForMember(dest => dest.Name,
                 src => src.MapFrom(x => x.Name))
             .ForMember(dest => dest.Id,
-                src => src.MapFrom(x => 1))
+                src => src.MapFrom(x => x.Id))
             //.ForMember(dest => dest.Notes, 
             //    src => src.MapFrom(x => x.Notes))
             .ForPath(dest => dest.ManagerId, 
@@ -82,5 +82,11 @@ public class WorkspaceTaskProfile : Profile
                 src => src.MapFrom(x => x.Name))
             .ForMember(dest => dest.Status,
                 src => src.MapFrom((x) => StatusTask.FromValue(x.Status)));
+
+        CreateMap<WorkspaceTaskEmployee, WorkspaceTask>()
+            .ForPath(dest => dest.Employee.Id,
+                src => src.MapFrom(x => x.EmployeeId))
+            .ForMember(dest => dest.Id,
+                src => src.MapFrom((x) => x.TaskID));
     }
 }

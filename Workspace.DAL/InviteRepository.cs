@@ -1,43 +1,36 @@
 ﻿using Dapper;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Workspace.Entities;
 
 namespace Workspace.DAL
 {
-    public class InviteRepository : BaseRepository, IInviteRepository
+    public class InviteRepository(ILogger<InviteRepository> logger, IConfiguration configuration) 
+        : BaseRepository(logger, configuration), IInviteRepository
     {
-        private readonly ILogger _logger;
+        private readonly ILogger _loggerr = logger;
 
-        public InviteRepository(ILogger<InviteRepository> logger, IConfiguration configuration)
-            : base(logger, configuration)
-        {
-            _logger = logger;
-        }
 
-        public async Task<Guid> CheckInviteAsync(Guid id)
+        public async Task<InviteDTO?> CheckInviteAsync(Guid id)
         {
+            //Guid guid = Guid.Empty;
             try
             {
                 var sql = "SELECT * FROM public.check_invite(@martid)";
+                //var param = new { martid = id };
 
                 var param = new DynamicParameters();
                 param.Add("@martid", id);
 
-                var result = await QuerySingleAsync<Guid>(sql, param);
+                //var result = await QuerySingleAsync<InviteDTO>(sql, param);
 
-                return result;
+                return await QuerySingleAsync<InviteDTO>(sql, param);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Ошибка в CheckInviteAsync");
-                throw;
+                return new InviteDTO();
             }
         }
 
@@ -94,19 +87,11 @@ namespace Workspace.DAL
         
         //Данный метод возвращает все пришлашения для юреза, который захочет 
         //участвовать в проекте
-        public async Task<IEnumerable<InviteRollDTO>> GetAllInvitesAsync()
+        public IAsyncEnumerable<InviteRollDTO> GetAllInvitesAsync()
         {
-            try
-            {
-                var sql = "select * from public.get_all_invites()";
-            
-                return await QueryAsync<InviteRollDTO>(sql);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Ошибка в GetAllInvitesAsync");
-                throw;
-            }
+            var sql = "select * from public.get_all_invites()";
+
+            return Query<InviteRollDTO>(sql);
         }
 
         //Данный метод возвращает пользователей которые согласились участвоать в mart

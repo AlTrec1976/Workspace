@@ -1,10 +1,6 @@
-﻿using FluentValidation;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
-using System.ComponentModel.DataAnnotations;
+
 using Workspace.BLL.Logic;
 using Workspace.Entities;
 
@@ -34,6 +30,8 @@ namespace Workspace.PL.Controllers
         ///"ownerId": ИД пользователя, который создает 
         /// </param>
         /// <response code="200">Вернет JSON workspaceMartRequestе который содержит ИД созданного  WorkspaceMart</response>
+        [Authorize]
+        [HasPermission([Permission.manager, Permission.create])]
         [HttpPost]
         public async Task <WorkspaceMartResponse> CreateAsyncAsync([FromBody] WorkspaceMartRequest workspaceMartRequest)
         {
@@ -77,6 +75,8 @@ namespace Workspace.PL.Controllers
         ///   "status": согласно логике при создании Таска его статус равен Новый = 1
         /// </param>
         /// <returns></returns>
+        [Authorize]
+        [HasPermission([Permission.manager, Permission.create])]
         [HttpPost("{id}")]
         public async Task<WorkspaceTaskResponse> AddNewTaskAsync(Guid id, [FromBody] WorkspaceTaskShortRequest workspaceTaskRequest)
         {

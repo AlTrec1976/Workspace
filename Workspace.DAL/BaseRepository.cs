@@ -2,20 +2,15 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Npgsql;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Workspace.DAL;
 
-public abstract class BaseRepository
+public abstract class BaseRepository(ILogger<BaseRepository> logger, IConfiguration configuration)
 {
-    private readonly string _connectionString;
-    private readonly ILogger _logger;
-
-    protected BaseRepository(ILogger<BaseRepository> logger, IConfiguration configuration)
-    {
-        _logger = logger;
-        _connectionString = configuration.GetConnectionString("DefaultConnection");
-    }
-
+    protected readonly string _connectionString = configuration.GetConnectionString("DefaultConnection");
+    protected readonly ILogger _logger = logger;
+    
     public async Task ExecuteAsync(string sql, object param)
     {
         try
@@ -29,6 +24,19 @@ public abstract class BaseRepository
             throw;
         }
     }
+
+    public async IAsyncEnumerable<T> Query<T>(string sql, object param = null)
+    {
+        using var connection = GetConnection();
+        var reader = await connection.ExecuteReaderAsync(sql, param);
+        var rowParser = reader.GetRowParser<T>();
+
+        while (await reader.ReadAsync())
+        {
+            yield return rowParser(reader);
+        }
+    }
+
     public async Task<IEnumerable<T>> QueryAsync<T>(string sql, object param = null)
     {
         try

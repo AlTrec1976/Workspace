@@ -8,6 +8,26 @@ namespace Workspace.BLL.Logic
         public InviteProfile()
         {
 
+            //маппинг из InviteRequest в Invite
+            CreateMap<InviteRequest, Invite>()
+             .ForMember(dest => dest.InviteText, src => src.MapFrom(x => x.InviteText))
+             .ForPath(dest => dest.WorkspaceMartObj.Id, src => src.MapFrom(x => x.MartId))
+             .ForMember(dest => dest.IsOppened, src => src.MapFrom(x => x.IsOppened));
+
+            //маппинг из InviteDTO в InviteResponse
+            CreateMap<InviteDTO, InviteResponse>()
+             .ForMember(dest => dest.Id, src => src.MapFrom(x => x.Id))
+             .ForMember(dest => dest.InviteText, src => src.MapFrom(x => x.InviteText))
+             .ForMember(dest => dest.MartId, src => src.MapFrom(x => x.MartId))
+             .ForMember(dest => dest.IsOppened, src => src.MapFrom(x => x.IsOppened));
+
+            //маппинг из Invite в InviteDTO
+            CreateMap<Invite, InviteDTO>()
+             .ForMember(dest => dest.Id, src => src.MapFrom(x => x.Id))
+             .ForMember(dest => dest.InviteText, src => src.MapFrom(x => x.InviteText))
+             .ForMember(dest => dest.MartId, src => src.MapFrom(x => x.WorkspaceMartObj.Id))
+             .ForMember(dest => dest.IsOppened, src => src.MapFrom(x => x.IsOppened));
+
             //маппинг из InviteRollDTO в InviteResponse
             CreateMap<InviteRollDTO, InviteResponse>()
              .ForMember(dest => dest.Id, src => src.MapFrom(x => x.InviteId))
@@ -18,20 +38,7 @@ namespace Workspace.BLL.Logic
              .ForMember(dest => dest.InviteText, src => src.MapFrom(x => x.InviteComments))
              .ForMember(dest => dest.UserName, src => src.MapFrom(x => x.UserName));
 
-            //маппинг из InviteRequest в Invite
-            CreateMap<InviteRequest, Invite>()
-             .ForMember(dest => dest.InviteText, src => src.MapFrom(x => x.InviteText))
-             .ForMember(dest => dest.WorkspaceMartObj, src => src.MapFrom(x => x.MartId))
-             .ForMember(dest => dest.IsOppened, src => src.MapFrom(x => x.IsOppened));
-
             //маппинг из InviteRollDTO в InviteResponse
-            CreateMap<InviteRollDTO, InviteResponse>()
-             .ForMember(dest => dest.Id, src => src.MapFrom(x => x.InviteId))
-             .ForMember(dest => dest.InviteText, src => src.MapFrom(x => x.InviteComments))
-             .ForMember(dest => dest.MartId, src => src.MapFrom(x => x.MartId))
-             .ForMember(dest => dest.IsOppened, src => src.MapFrom(x => x.IsOpened));
-
-            //маппинг из InviteDTO в InviteResponse
             CreateMap<InviteRollDTO, InviteResponse>()
              .ForMember(dest => dest.Id, src => src.MapFrom(x => x.InviteId))
              .ForMember(dest => dest.InviteText, src => src.MapFrom(x => x.InviteComments))

@@ -1,21 +1,13 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Workspace.BLL.Logic.Contracts;
 using Workspace.DAL;
 using Workspace.Entities;
-using Workspace.Entities.Contracts;
 
 namespace Workspace.BLL.Logic
 {
-    public class SendboxService(AppDbContext context, IMapper mapper, ISendboxRepository sendboxRepository, ILogger<SendboxService> logger)
+    public class SendboxService(IMapper mapper, ISendboxRepository sendboxRepository, ILogger<SendboxService> logger)
                                 : ISendboxService
     {
-        private readonly AppDbContext _context = context;
         private readonly ISendboxRepository _sendboxRepository = sendboxRepository;
         private readonly IMapper _mapper = mapper;
         private readonly ILogger _logger = logger;

@@ -7,29 +7,16 @@ using Workspace.Entities;
 
 namespace Workspace.DAL;
 
-public class UserRepository : BaseRepository, IUserRepository
+public class UserRepository(ILogger<UserRepository> logger, IConfiguration configuration) 
+    : BaseRepository(logger, configuration), IUserRepository
 {
-    private readonly ILogger _logger;
+    private readonly ILogger _logger = logger;
 
-    public UserRepository(ILogger<UserRepository> logger, IConfiguration configuration)
-        : base(logger, configuration)
+    public IAsyncEnumerable<WorkspaceUserDTO> GetAllUsersAsync()
     {
-        _logger = logger;
-    }
-    
-    public async Task<IEnumerable<WorkspaceUserDTO>> GetAllUsersAsync()
-    {
-        try
-        {
-            var sql = "SELECT * FROM public.get_all_users()";
+        var sql = "SELECT * FROM public.get_all_users()";
 
-            return await QueryAsync<WorkspaceUserDTO>(sql);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Ошибка при выводе списка User");
-            throw;
-        }
+        return Query<WorkspaceUserDTO>(sql);
     }
 
     public async Task<WorkspaceUserDTO> GetByIDAsync(Guid userId)

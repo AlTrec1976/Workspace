@@ -1,8 +1,8 @@
-﻿using FluentValidation;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using System.ComponentModel.DataAnnotations;
+
 using Workspace.BLL.Logic;
+using Workspace.BLL.Logic.Contracts;
 using Workspace.Entities;
 
 namespace Workspace.PL.Controllers
@@ -24,6 +24,8 @@ namespace Workspace.PL.Controllers
         /// </remarks>
         /// <param name="inviteRequest"></param>
         /// <returns></returns>
+        [Authorize]
+        [HasPermission([Permission.manager, Permission.create])]
         [HttpPost]
         public async Task<InviteResponse> CreateAsync([FromBody] InviteRequest inviteRequest)
         {
@@ -63,18 +65,12 @@ namespace Workspace.PL.Controllers
         ///  выбирать конкретных пользователей для добавления в таск
         /// </remarks>
         /// <returns></returns>
+        [Authorize]
+        [HasPermission([Permission.user, Permission.read])]
         [HttpGet("/GetAllInvites")]
-        public async Task<List<InviteResponse>> GetAllInvitesAsync()
+        public IAsyncEnumerable<InviteResponse> GetAllInvitesAsync()
         {
-            try
-            {
-                return await _inviteService.GetAllInvitesAsync();
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Ошибка в GetAllInvitesAsync");
-                throw;
-            }
+            return _inviteService.GetAllInvitesAsync();
         }
 
         /// <summary>
@@ -93,6 +89,8 @@ namespace Workspace.PL.Controllers
         /// <returns></returns>
         /// <response code="200">Ответ на приглашение сохранено, менеджер 
         /// сможет добавить в песочницу данного пользователя</response>
+        [Authorize]
+        [HasPermission([Permission.user, Permission.create])]
         [HttpPost("/AcceptInvite")]
         public async Task AcceptInvite([FromBody] InviteDetailRequest? inviteDetailRequest)
         {
@@ -133,6 +131,8 @@ namespace Workspace.PL.Controllers
         /// </remarks>
         /// <param name="martId">ИД марта, для которых хотим увидеть согласившихся юзеров</param>
         /// <returns> </returns>
+        [Authorize]
+        [HasPermission([Permission.manager, Permission.read])]
         [HttpGet("/AcceptInvite/{martId}")]
         public async Task<List<InviteResponse>> GetAcceptedInvitesAsync(Guid martId)
         {

@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-
 using Workspace.BLL.Logic.Contracts;
 using Workspace.Entities;
 
@@ -21,18 +20,9 @@ public class WorkspaceTaskController(ITaskService taskService, ILogger<Workspace
     [Authorize]
     [HasPermission([Permission.user, Permission.read])]
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<WorkspaceTaskResponse>>> GetAsync()
+    public IAsyncEnumerable<WorkspaceTaskResponse> GetAsync()
     {
-        try
-        {
-            var _workspaceTasksResponse = await _taskService.GetAllAsync();
-            return Ok(_workspaceTasksResponse);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Ошибка в GetAllAsync");
-            throw;
-        }
+        return _taskService.GetAllAsync();
     }
 
     /// <summary>
@@ -63,7 +53,7 @@ public class WorkspaceTaskController(ITaskService taskService, ILogger<Workspace
     /// Изменение задачи
     /// </summary>
     [Authorize]
-    [HasPermission([Permission.user, Permission.update])]
+    [HasPermission([Permission.manager, Permission.update])]
     [HttpPut("{id}")]
     public async Task UpdateAsync(Guid id, [FromBody] WorkspaceTaskRequest workspaceTaskRequest)
     {
@@ -98,7 +88,7 @@ public class WorkspaceTaskController(ITaskService taskService, ILogger<Workspace
     /// Создание задачи
     /// </summary>
     [Authorize]
-    [HasPermission([Permission.user, Permission.create])]
+    [HasPermission([Permission.manager, Permission.create])]
     [HttpPost]
     public async Task CreateAsync([FromBody] WorkspaceTaskRequest workspaceTaskRequest)
     {
@@ -133,7 +123,7 @@ public class WorkspaceTaskController(ITaskService taskService, ILogger<Workspace
     /// Удаление задачи
     /// </summary>
     [Authorize]
-    [HasPermission([Permission.user, Permission.delete])]
+    [HasPermission([Permission.manager, Permission.delete])]
     [HttpDelete("{id}")]
     public async Task DeleteAsync(Guid id)
     {
@@ -158,7 +148,7 @@ public class WorkspaceTaskController(ITaskService taskService, ILogger<Workspace
     /// <param name="martId"></param>
     /// <returns></returns>
     [Authorize]
-    [HasPermission([Permission.user, Permission.read])]
+    [HasPermission([Permission.manager, Permission.read])]
     [HttpGet("workspacemart/{martId}")]
     public async Task<ActionResult<WorkspaceTaskResponse>> GetAllTasksForMartAsync(Guid martId)
     {
@@ -178,20 +168,37 @@ public class WorkspaceTaskController(ITaskService taskService, ILogger<Workspace
     /// <summary>
     /// Назначение пользователя за таском
     /// </summary>
-    /// <param name="id">Ид таска</param>
-    /// <param name="workspaceTaskRequest">Передаем только ид пользователя</param>
+    /// <param name="workspaceTaskEmployee"></param>
     /// <returns></returns>
-    [HttpPut("workspacemart/{id}")]
-    public async Task SetEmployeeAsync(Guid id, [FromBody] WorkspaceTaskRequest workspaceTaskRequest)
+    [Authorize]
+    [HasPermission([Permission.manager, Permission.update])]
+    [HttpPut("workspacemart")]
+    public async Task SetEmployeeAsync([FromBody] WorkspaceTaskEmployee workspaceTaskEmployee)
     {
         try
         {
-            await _taskService.SetEmployeeAsync(id, workspaceTaskRequest);
+            await _taskService.SetEmployeeAsync(workspaceTaskEmployee);
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Ошибка в назначении сотрудника за таском");
             throw;
         }
+    }
+    /// <summary>
+    /// Изменяет статус задания
+    /// </summary>
+    /// <remarks>
+    /// Изменяет статус задания в зависимости от контекста пользователя
+    /// Менеджер или Сотрудник.
+    /// </remarks>
+    /// <param name="taskUserRequest"></param>
+    /// <returns></returns>
+    [Authorize]
+    [HasPermission([Permission.user, Permission.update])]
+    [HttpPut("status")]
+    public async Task UpdateStatus([FromBody] TaskUserRequest taskUserRequest)
+    { 
+        await _taskService.ChangeStatus(taskUserRequest);
     }
 }

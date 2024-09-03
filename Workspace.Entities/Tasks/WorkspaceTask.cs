@@ -1,9 +1,18 @@
 using Workspace.Entities.Contracts;
 
+
 namespace Workspace.Entities;
 
 public class WorkspaceTask : IWorkspaceTask
 {
+    private WorkspaceUser _user;
+    private WorkspaceTask _task;
+    private IOrgRole _role;
+    public WorkspaceTask() {}
+    public WorkspaceTask(WorkspaceUser workspace, WorkspaceTask workspaceTask)
+    {
+
+    }
     public Guid Id { get; set; }
     public string Name { get; set; }
     public StatusTask Status { get; set; }

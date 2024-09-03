@@ -1,6 +1,6 @@
-﻿using FluentValidation;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+
 using Workspace.BLL.Logic;
 using Workspace.Entities;
 
@@ -22,6 +22,8 @@ namespace Workspace.PL.Controllers
         /// </remarks>
         /// <param name="sendboxRequest"></param>
         /// <returns></returns>
+        [Authorize]
+        [HasPermission([Permission.manager, Permission.create])]
         [HttpPost]
         public async Task CreateAsync([FromBody] SendboxRequest sendboxRequest)
         {
@@ -61,6 +63,8 @@ namespace Workspace.PL.Controllers
         /// </remarks>
         /// <param name="martId"></param>
         /// <returns></returns>
+        [Authorize]
+        [HasPermission([Permission.manager, Permission.read])]
         [HttpGet("{martId}")]
         public async Task<List<SendboxFullRequest>> GetUsersAsync(Guid martId)
         { 

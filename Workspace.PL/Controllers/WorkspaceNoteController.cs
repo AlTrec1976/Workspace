@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 using Workspace.BLL.Logic.Contracts;
@@ -21,18 +20,9 @@ public class WorkspaceNoteController(INoteService noteService, ILogger<Workspace
     [Authorize]
     [HasPermission([Permission.user, Permission.read])]
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<WorkspaceNoteResponse>>> GetAsync()
+    public IAsyncEnumerable<WorkspaceNoteResponse> GetAsync()
     {
-        try
-        {
-            var _workspaceNotesResponse = await _noteService.GetAllAsync();
-            return Ok(_workspaceNotesResponse);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Ошибка в GetAllAsync");
-            throw;
-        }
+        return _noteService.GetAllAsync();
     }
 
     /// <summary>

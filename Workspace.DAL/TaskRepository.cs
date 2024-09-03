@@ -1,32 +1,22 @@
+using Dapper;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using System.Data;
+using System.Threading.Tasks;
 using Workspace.Entities;
 
 namespace Workspace.DAL;
 
-public class TaskRepository : BaseRepository, ITaskRepository
+public class TaskRepository(ILogger<TaskRepository> logger, IConfiguration configuration) 
+    : BaseRepository(logger, configuration), ITaskRepository
 {
-    private readonly ILogger _logger;
+    private readonly ILogger _logger = logger;
 
-    public TaskRepository(ILogger<TaskRepository> logger, IConfiguration configuration)
-        : base(logger, configuration)
+    public IAsyncEnumerable<WorkspaceTaskDTO> GetAllTasksAsync()
     {
-        _logger = logger;
-    }
+        var sql = "SELECT * FROM public.get_all_tasks()";
 
-    public async Task<IEnumerable<WorkspaceTaskDTO>> GetAllTasksAsync()
-    {
-        try
-        {
-            var sql = "SELECT * FROM public.get_all_tasks()";
-
-            return await QueryAsync<WorkspaceTaskDTO>(sql);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Ошибка при выводе списка заданий");
-            throw;
-        }
+        return Query<WorkspaceTaskDTO>(sql);
     }
 
     public async Task<WorkspaceTaskDTO> GetByIDAsync(Guid taskId)
@@ -143,5 +133,35 @@ public class TaskRepository : BaseRepository, ITaskRepository
             _logger.LogError(ex, "Ошибка при назначении сотрудника");
             throw;
         }
+    }
+
+    public bool IsTaskOwner(WorkspaceTaskDTO task, WorkspaceUserDTO user)
+    {
+        using var connection = GetConnection();
+
+        var sql = "public.is_manager";
+
+        var param = new DynamicParameters();
+        param.Add("@task_id", task.Id);
+        param.Add("@user_id", user.Id);
+        param.Add("@is_man", dbType: DbType.Boolean, direction: ParameterDirection.Output);
+        
+        connection.Execute(sql, param, commandType: CommandType.StoredProcedure);
+
+        var isManager = param.Get<Boolean>("@is_man");
+        return isManager;
+    }
+
+    public async Task UpdateStatus(WorkspaceTaskDTO workspaceTaskDTO)
+    {
+        using var connection = GetConnection();
+
+        var sql = "public.update_task_status";
+
+        var param = new DynamicParameters();
+        param.Add("@taskid", workspaceTaskDTO.Id);
+        param.Add("@tstatus", workspaceTaskDTO.Status);
+        
+        await connection.ExecuteAsync(sql, param, commandType: CommandType.StoredProcedure);
     }
 }

@@ -67,19 +67,13 @@ public static class DIExtensions
                            IssuerSigningKey = new SymmetricSecurityKey(
                                Encoding.UTF8.GetBytes(jwtOptions!.SecretKey))
                     };
-                //cookies не из запроса
                 
                 options.Events = new JwtBearerEvents
                 {
                     OnMessageReceived = context =>
                     {
                         context.Request.Cookies.TryGetValue("maxima-sec-cookies",out var accessToken);
-                       /* if (!string.IsNullOrEmpty(accessToken))
-                        {
-                            context.Token = accessToken;
-                        }
-                        */
-                       context.Token = accessToken;
+                        context.Token = accessToken;
                        
                         return Task.CompletedTask;
                     }

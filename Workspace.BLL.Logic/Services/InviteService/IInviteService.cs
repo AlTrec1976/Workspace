@@ -12,6 +12,6 @@ namespace Workspace.BLL.Logic
         Task AcceptInviteAsync(InviteDetailRequest inviteDetailRequest);
         public Task<InviteResponse> CreateAsync(InviteRequest inviteRequest);
         Task<List<InviteResponse>> GetAcceptedInvitesAsync(Guid martId);
-        Task<List<InviteResponse>> GetAllInvitesAsync();
+        IAsyncEnumerable<InviteResponse> GetAllInvitesAsync();
     }
 }

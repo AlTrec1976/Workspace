@@ -1,37 +1,23 @@
 using AutoMapper;
+using Microsoft.Extensions.Logging;
 
 using Workspace.DAL;
 using Workspace.BLL.Logic.Contracts;
 using Workspace.Entities;
-using Microsoft.Extensions.Logging;
+using Workspace.Entities.Contracts;
 namespace Workspace.BLL.Logic;
 
-public class TaskService (AppDbContext context, IMapper mapper , ITaskRepository taskRepository, ILogger<TaskService> logger) : ITaskService
+public class TaskService (IMapper mapper , ITaskRepository taskRepository, ILogger<TaskService> logger) : ITaskService
 {
-    private readonly AppDbContext _context = context;
     private readonly ITaskRepository _taskRepository = taskRepository;
     private readonly IMapper _mapper = mapper;
     private readonly ILogger _logger = logger;
 
-    public async Task<List<WorkspaceTaskResponse>> GetAllAsync()
+    public async IAsyncEnumerable<WorkspaceTaskResponse> GetAllAsync()
     {
-        try
+        await foreach (var task in _taskRepository.GetAllTasksAsync())
         {
-            var workspaceTasks = new List<WorkspaceTask>();
-            var workspaceTaskResponse = new List<WorkspaceTaskResponse>();
-
-            var workspaceTaskResponsesDTO = await _taskRepository.GetAllTasksAsync();
-
-            workspaceTasks = _mapper.Map<List<WorkspaceTask>>(workspaceTaskResponsesDTO);
-
-            workspaceTaskResponse = _mapper.Map<List<WorkspaceTaskResponse>>(workspaceTasks);
-
-            return workspaceTaskResponse;
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Ошибка в GetAllAsync");
-            throw;
+            yield return _mapper.Map<WorkspaceTaskResponse>(task);
         }
     }
 
@@ -150,19 +136,18 @@ public class TaskService (AppDbContext context, IMapper mapper , ITaskRepository
         }
     }
 
-    public async Task SetEmployeeAsync(Guid id, WorkspaceTaskRequest workspaceTaskRequest)
+    public async Task SetEmployeeAsync(WorkspaceTaskEmployee workspaceTaskEmployee)
     {
         try
         {
             //проверяем, а есть ли в БД такой объект
-            var workspaceTaskDto = await _taskRepository.GetByIDAsync(id);
+            var workspaceTaskDto = await _taskRepository.GetByIDAsync(workspaceTaskEmployee.TaskID);
 
             var workspaceTask = new WorkspaceTask();
-            workspaceTask = _mapper.Map<WorkspaceTask>(workspaceTaskRequest);
-            workspaceTask.Id = id;
-            
+            workspaceTask = _mapper.Map<WorkspaceTask>(workspaceTaskEmployee);
+                        
             workspaceTaskDto = _mapper.Map<WorkspaceTaskDTO>(workspaceTask);
-            workspaceTaskDto.EmployeeId = workspaceTaskRequest.EmployeeId;
+            //workspaceTaskDto.EmployeeId = workspaceTaskRequest.EmployeeId;
             await _taskRepository.SetEmployeeAsync(workspaceTaskDto);
         }
         catch (Exception ex)
@@ -173,9 +158,14 @@ public class TaskService (AppDbContext context, IMapper mapper , ITaskRepository
 
     }
 
-    //здесь просто меняем статус
-    public void ChangeStatus()
+    public async Task ChangeStatus(TaskUserRequest taskUserRequest)
     {
-        Console.WriteLine("Статус изменен");
+        WorkspaceUser _user = new();
+        _user.Id = taskUserRequest.UserId;
+
+        var _taskDTO = await _taskRepository.GetByIDAsync(taskUserRequest.TaskId);
+        var _task = _mapper.Map<WorkspaceTask>(_taskDTO);
+        var ghost = new UserGhost(_mapper, _taskRepository, _user, _task);
+        ghost.ChangeStatus(_task.Status);
     }
 }

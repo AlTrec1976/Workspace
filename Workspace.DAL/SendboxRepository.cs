@@ -2,12 +2,13 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System.Data;
+
 using Workspace.Entities;
 
 namespace Workspace.DAL
 {
-    public class SendboxRepository(ILogger<MartRepository> logger, IConfiguration configuration)
-                    : BaseRepository(logger, configuration), ISendboxRepository
+    public class SendboxRepository(ILogger<MartRepository> logger, IConfiguration configuration) 
+        : BaseRepository(logger, configuration), ISendboxRepository
     {
         private readonly ILogger _logger = logger;
         private readonly IConfiguration _configuration = configuration;

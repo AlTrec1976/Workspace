@@ -1,5 +1,4 @@
-﻿
-namespace Workspace.Entities
+﻿namespace Workspace.Entities
 {
     public class SendboxFullRequest : SendboxRequest
     {

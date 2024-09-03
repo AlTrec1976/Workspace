@@ -6,9 +6,9 @@ public enum Permission
     create,
     update,
     delete,
+    sysadmin,
     admin,
     user,
     manager,
-    employee,
-    sysadmin
+    employee
 } 

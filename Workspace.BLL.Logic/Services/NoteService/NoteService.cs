@@ -1,43 +1,24 @@
 ﻿using AutoMapper;
+using Microsoft.Extensions.Logging;
 
 using Workspace.BLL.Logic.Contracts;
 using Workspace.DAL;
 using Workspace.Entities;
-using Microsoft.Extensions.Logging;
 
 namespace Workspace.BLL.Logic;
 
-public class NoteService(
-    AppDbContext context, 
-    IMapper mapper, 
-    INoteRepository noteRepository, 
-    ILogger<NoteService> logger
-    ) : INoteService
+public class NoteService(IMapper mapper, INoteRepository noteRepository, ILogger<NoteService> logger) : INoteService
 {
-    private readonly AppDbContext _context = context;
+
     private readonly INoteRepository _noteRepository = noteRepository;
     private readonly IMapper _mapper = mapper;
     private readonly ILogger _logger = logger;
 
-    public async Task<List<WorkspaceNoteResponse>> GetAllAsync()
+    public async IAsyncEnumerable<WorkspaceNoteResponse> GetAllAsync()
     {
-        try
+        await foreach (var item in _noteRepository.GetAllNotesAsync())
         {
-            var workspaceNotes = new List<WorkspaceNoteResponse>();
-            var workspaceNoteResponse = new List<WorkspaceNoteResponse>();
-
-            var workspaceNoteResponsesDTO = await _noteRepository.GetAllNotesAsync();
-
-            workspaceNotes = _mapper.Map<List<WorkspaceNoteResponse>>(workspaceNoteResponsesDTO);
-
-            workspaceNoteResponse = _mapper.Map<List<WorkspaceNoteResponse>>(workspaceNotes);
-
-            return workspaceNotes;
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Ошибка в GetAllAsync");
-            throw;
+            yield return _mapper.Map<WorkspaceNoteResponse>(item);
         }
     }
 

@@ -7,15 +7,9 @@ using Workspace.Entities;
 
 namespace Workspace.DAL
 {
-    public class MartRepository : BaseRepository, IMartRepository
+    public class MartRepository(ILogger<MartRepository> logger, IConfiguration configuration) : BaseRepository(logger, configuration), IMartRepository
     {
-        private readonly ILogger _logger;
-
-        public MartRepository(ILogger<MartRepository> logger, IConfiguration configuration)
-            : base(logger, configuration)
-        {
-            _logger = logger;
-        }
+        private readonly ILogger _logger = logger;
 
         public async Task <WorkspaceMartDTO> CreateMartAsync(WorkspaceMartDTO workspaceMartDTO)
         {

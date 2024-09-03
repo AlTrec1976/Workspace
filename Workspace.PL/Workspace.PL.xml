@@ -265,12 +265,22 @@
             <param name="martId"></param>
             <returns></returns>
         </member>
-        <member name="M:Workspace.PL.WorkspaceTaskController.SetEmployeeAsync(System.Guid,Workspace.Entities.WorkspaceTaskRequest)">
+        <member name="M:Workspace.PL.WorkspaceTaskController.SetEmployeeAsync(Workspace.Entities.WorkspaceTaskEmployee)">
             <summary>
             Назначение пользователя за таском
             </summary>
-            <param name="id">Ид таска</param>
-            <param name="workspaceTaskRequest">Передаем только ид пользователя</param>
+            <param name="workspaceTaskEmployee"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Workspace.PL.WorkspaceTaskController.UpdateStatus(Workspace.Entities.TaskUserRequest)">
+            <summary>
+            Изменяет статус задания
+            </summary>
+            <remarks>
+            Изменяет статус задания в зависимости от контекста пользователя
+            Менеджер или Сотрудник.
+            </remarks>
+            <param name="taskUserRequest"></param>
             <returns></returns>
         </member>
         <member name="M:Workspace.PL.WorkspaceUserController.LoginAsync(Workspace.Entities.Users.WorkspaceUserLogin)">

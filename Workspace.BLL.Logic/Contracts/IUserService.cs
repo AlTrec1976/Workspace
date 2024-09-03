@@ -6,7 +6,7 @@ namespace Workspace.BLL.Logic.Contracts;
 public interface IUserService
 {
     Task<string> LoginAsync(WorkspaceUserRequest workspaceUserRequest);
-    Task<List<WorkspaceUserResponse>> GetAllAsync();
+    IAsyncEnumerable<WorkspaceUserResponse> GetAllAsync();
     Task<WorkspaceUserResponse?> GetByIdAsync(Guid id);
     Task UpdateAsync(Guid id, WorkspaceUserRequest workspaceUserRequest);
     Task CreateAsync(WorkspaceUserRequest workspaceUserRequest);

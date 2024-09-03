@@ -6,15 +6,12 @@ using Microsoft.Extensions.Logging;
 
 namespace Workspace.BLL.Logic;
 
-public class InviteService(AppDbContext context, IMapper mapper, IInviteRepository inviteRepository, ILogger<InviteService> logger) : IInviteService
+public class InviteService(IMapper mapper, IInviteRepository inviteRepository, ILogger<InviteService> logger) : IInviteService
 {
-    private readonly AppDbContext _context = context;
     private readonly IInviteRepository _inviteRepository = inviteRepository;
     private readonly IMapper _mapper = mapper;
     private readonly ILogger _logger = logger;
     
-
-
     public async Task<InviteResponse> CreateAsync(InviteRequest inviteRequest)
     {
         try
@@ -24,14 +21,14 @@ public class InviteService(AppDbContext context, IMapper mapper, IInviteReposito
 
             var _inviteDTO = _mapper.Map<InviteDTO>(_invite);
 
-            var checkInvite = _inviteRepository.CheckInviteAsync(_inviteDTO.MartId);
+            var checkInvite = await _inviteRepository.CheckInviteAsync(inviteRequest.MartId);
 
-            if (checkInvite is not null)
+            if (checkInvite?.Id != Guid.Empty)
             {
                 throw new Exception("Приглашение уже отправлено");
             }
-            
-            await _inviteRepository.CreateInviteAsync(_inviteDTO);
+
+            _inviteDTO = await _inviteRepository.CreateInviteAsync(_inviteDTO);
             var _inviteResponse = _mapper.Map<InviteResponse>(_inviteDTO);
 
             return _inviteResponse;
@@ -57,20 +54,11 @@ public class InviteService(AppDbContext context, IMapper mapper, IInviteReposito
             throw;
         }
     }
-    public async Task<List<InviteResponse>> GetAllInvitesAsync()
+    public async IAsyncEnumerable<InviteResponse> GetAllInvitesAsync()
     {
-        try
+        await foreach (var item in _inviteRepository.GetAllInvitesAsync())
         {
-            var _invites = new List<InviteResponse>();
-            var _invitekResponsesDTO = await _inviteRepository.GetAllInvitesAsync();
-             _invites = _mapper.Map<List<InviteResponse>> (_invitekResponsesDTO);
-
-            return _invites;
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Ошибка в GetAllInvitesAsync");
-            throw;
+            yield return _mapper.Map<InviteResponse>(item);
         }
     }
 

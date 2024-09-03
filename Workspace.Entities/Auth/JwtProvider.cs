@@ -4,7 +4,6 @@ using System.Text;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Workspace.Entities;
-using Workspace.Entities.Contracts;
 
 namespace Workspace.Auth;
 

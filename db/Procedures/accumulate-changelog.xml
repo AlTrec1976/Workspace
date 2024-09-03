@@ -32,5 +32,7 @@
     <include file="/Procedures/delete_role_permission.sql"/>
     <include file="/Procedures/create_user_role.sql"/>
     <include file="/Procedures/delete_user_role.sql"/>
+    <include file="/Procedures/is_manager.sql"/>
+    <include file="/Procedures/update_task_status.sql"/>
 
 </databaseChangeLog>

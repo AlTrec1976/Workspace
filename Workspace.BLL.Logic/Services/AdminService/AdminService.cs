@@ -6,9 +6,8 @@ using Workspace.Entities;
 
 namespace Workspace.BLL.Logic
 {
-    public class AdminService(AppDbContext context, IMapper mapper, IAdminRepository adminRepository, ILogger<AdminService> logger) : IAdminService
+    public class AdminService(IMapper mapper, IAdminRepository adminRepository, ILogger<AdminService> logger) : IAdminService
     {
-        private readonly AppDbContext _context = context;
         private readonly IAdminRepository _adminRepository = adminRepository;
         private readonly IMapper _mapper = mapper;
         private readonly ILogger _logger = logger;
